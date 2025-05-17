@@ -2,40 +2,32 @@
   "name": "unnati-solar",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://harshit1314.github.io/unnati-solar",
   "dependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.0",
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.0",
-    "gh-pages": "^6.1.0",
-    "postcss": "^8.4.0",
-    "tailwindcss": "^3.0.0"
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "vercel-build": "npm run build"  // ← Required for Vercel
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+  },
+  "engines": {
+    "node": ">=18.0.0"  // ← Match Vercel's default
   }
 }
