@@ -21,13 +21,13 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "vercel-build": "npm run build"  // ← Required for Vercel
+    "vercel-build": "npm run build"
   },
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],
     "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "engines": {
-    "node": ">=18.x"  // ← Match Vercel's default
+    "node": ">=18.0.0"
   }
 }
