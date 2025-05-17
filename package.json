@@ -28,6 +28,6 @@
     "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
   "engines": {
-    "node": ">=18.0.0"  // ← Match Vercel's default
+    "node": ">=18.x"  // ← Match Vercel's default
   }
 }
