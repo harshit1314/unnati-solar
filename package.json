@@ -2,7 +2,7 @@
   "name": "unnati-solar",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/harshit1314/unnati-solar",
+  "homepage": "https://harshit1314.github.io/unnati-solar",
   "dependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
