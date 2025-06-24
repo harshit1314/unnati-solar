@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { FiMail, FiPhone, FiMapPin, FiClock, FiUpload, FiMessageSquare } from 'react-icons/fi';
-import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
-import { FiUsers } from 'react-icons/fi';
-
+import React, { useState, useEffect, useRef } from 'react';
+import { FiMail, FiPhone, FiMapPin, FiClock, FiUpload, FiMessageCircle } from 'react-icons/fi';
+import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaUserFriends } from 'react-icons/fa';
 
 const Contact = () => {
+  // Form state
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -17,7 +16,19 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  // Chatbot state
   const [chatbotOpen, setChatbotOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    { sender: 'bot', text: 'Hello! How can I assist you with solar solutions today?' },
+  ]);
+  const [userMessage, setUserMessage] = useState('');
+  const messagesEndRef = useRef(null);
+
+  // Auto-scroll to bottom of chat
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -45,7 +56,6 @@ const Contact = () => {
     e.preventDefault();
     if (validateForm()) {
       setIsSubmitting(true);
-      // Simulate form submission
       setTimeout(() => {
         console.log('Form submitted:', formData);
         setIsSubmitting(false);
@@ -64,6 +74,40 @@ const Contact = () => {
 
   const handleChatbotToggle = () => {
     setChatbotOpen(!chatbotOpen);
+  };
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (userMessage.trim() === '') return;
+
+    // Add user message
+    const newUserMessage = { sender: 'user', text: userMessage };
+    setChatMessages([...chatMessages, newUserMessage]);
+    setUserMessage('');
+
+    // Simulate bot response after delay
+    setTimeout(() => {
+      const botResponse = getBotResponse(userMessage.toLowerCase());
+      setChatMessages(prev => [...prev, { sender: 'bot', text: botResponse }]);
+    }, 1000);
+  };
+
+  const getBotResponse = (message) => {
+    if (message.includes('panel') || message.includes('system')) {
+      return "We offer high-quality solar panels with 25-year performance warranties. Would you like to know more about our installation process?";
+    } else if (message.includes('install') || message.includes('process')) {
+      return "Our installation typically takes 2-4 weeks from assessment to completion. We handle all permits and paperwork.";
+    } else if (message.includes('contact') || message.includes('reach')) {
+      return "You can call us at +91 98765 43210 or email support@unnati-renewables.com. Our team is available Mon-Sat 9AM-6PM.";
+    } else if (message.includes('thank') || message.includes('thanks')) {
+      return "You're welcome! Is there anything else I can help you with?";
+    } else {
+      return "I can help with information about our solar solutions, installation process, and more. What would you like to know?";
+    }
+  };
+
+  const handleQuickQuestion = (question) => {
+    setUserMessage(question);
   };
 
   return (
@@ -91,12 +135,12 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Form */}
-          <div>
+          <div id="contact-form">
             <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
               Send us a message
             </h2>
             <p className="mt-4 text-lg text-gray-500">
-              Have questions about solar energy? Fill out the form and our team will get back to you within 24 hours.
+              Have questions about solar energy? Our team is ready to assist you.
             </p>
             
             {submitSuccess ? (
@@ -271,7 +315,7 @@ const Contact = () => {
               {/* Social Media Links */}
               <div className="flex">
                 <div className="flex-shrink-0 bg-yellow-100 rounded-lg p-4">
-                  <FiUsers className="h-6 w-6 text-yellow-600" />
+                  <FaUserFriends className="h-6 w-6 text-yellow-600" />
                 </div>
                 <div className="ml-4">
                   <h3 className="text-lg font-medium text-gray-900">Connect With Us</h3>
@@ -309,8 +353,8 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Chatbot */}
-      <div className={`fixed bottom-8 right-8 transition-all duration-300 ${chatbotOpen ? 'h-96 w-80' : 'h-16 w-16'}`}>
+      {/* Chatbot - Positioned at bottom-left */}
+      <div className={`fixed bottom-8 left-8 transition-all duration-300 ${chatbotOpen ? 'h-96 w-80' : 'h-16 w-16'}`}>
         <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200 h-full flex flex-col">
           {chatbotOpen ? (
             <>
@@ -325,35 +369,62 @@ const Contact = () => {
                   </svg>
                 </button>
               </div>
-              <div className="flex-1 p-4 overflow-y-auto">
-                <div className="mb-4">
-                  <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
-                    <p className="text-sm">Hello! How can I help you with solar solutions today?</p>
+              
+              <div className="flex-1 p-4 overflow-y-auto space-y-3">
+                {chatMessages.map((msg, index) => (
+                  <div 
+                    key={index} 
+                    className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div 
+                      className={`rounded-lg p-3 max-w-xs ${msg.sender === 'user' 
+                        ? 'bg-yellow-500 text-white' 
+                        : 'bg-gray-100 text-gray-800'}`}
+                    >
+                      <p className="text-sm">{msg.text}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <button className="block w-full text-left bg-gray-100 hover:bg-gray-200 rounded-lg p-3 text-sm">
-                    What are your solar panel options?
-                  </button>
-                  <button className="block w-full text-left bg-gray-100 hover:bg-gray-200 rounded-lg p-3 text-sm">
-                    How much does solar installation cost?
-                  </button>
-                  <button className="block w-full text-left bg-gray-100 hover:bg-gray-200 rounded-lg p-3 text-sm">
-                    What financing options do you offer?
-                  </button>
-                </div>
+                ))}
+                <div ref={messagesEndRef} />
               </div>
-              <div className="p-4 border-t border-gray-200">
-                <div className="flex">
+              
+              <div className="p-3 bg-gray-50 border-t border-gray-200">
+                <div className="flex flex-wrap gap-2 mb-2">
+                  <button 
+                    onClick={() => handleQuickQuestion('What solar systems do you offer?')}
+                    className="text-xs bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1"
+                  >
+                    Solar Systems
+                  </button>
+                  <button 
+                    onClick={() => handleQuickQuestion('How does installation work?')}
+                    className="text-xs bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1"
+                  >
+                    Installation
+                  </button>
+                  <button 
+                    onClick={() => handleQuickQuestion('How can I contact support?')}
+                    className="text-xs bg-gray-200 hover:bg-gray-300 rounded-full px-3 py-1"
+                  >
+                    Contact Support
+                  </button>
+                </div>
+                
+                <form onSubmit={handleSendMessage} className="flex">
                   <input
                     type="text"
+                    value={userMessage}
+                    onChange={(e) => setUserMessage(e.target.value)}
                     placeholder="Type your message..."
-                    className="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                    className="flex-1 border border-gray-300 rounded-l-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-yellow-500"
                   />
-                  <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-r-lg">
+                  <button 
+                    type="submit"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-r-lg text-sm"
+                  >
                     Send
                   </button>
-                </div>
+                </form>
               </div>
             </>
           ) : (
@@ -361,7 +432,7 @@ const Contact = () => {
               onClick={handleChatbotToggle}
               className="h-full w-full flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl"
             >
-              <FiMessageSquare className="h-6 w-6" />
+              <FiMessageCircle className="h-6 w-6" />
             </button>
           )}
         </div>
@@ -372,15 +443,15 @@ const Contact = () => {
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
           <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
             <span className="block">Ready to go solar?</span>
-            <span className="block text-yellow-900">Get your free consultation today.</span>
+            <span className="block text-yellow-900">Our experts are here to help.</span>
           </h2>
           <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
             <div className="inline-flex rounded-md shadow">
               <a
-                href="#"
+                href="#contact-form"
                 className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-yellow-600 bg-white hover:bg-yellow-50"
               >
-                Book Now
+                Contact Our Team
               </a>
             </div>
           </div>

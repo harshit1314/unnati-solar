@@ -1,5 +1,6 @@
 import React from 'react';
-import Button from './Button';
+import { Link } from 'react-router-dom';
+import { FiArrowRight, FiBookOpen } from 'react-icons/fi';
 
 const Hero = () => {
   return (
@@ -34,12 +35,25 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition-all hover:scale-105">
-              Get Started
-            </Button>
-            <Button className="bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition-all hover:scale-105">
-              Learn More
-            </Button>
+            <Link 
+              to="/get-started" 
+              className="group relative bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-gray-900 font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition-all hover:scale-105 overflow-hidden inline-flex items-center justify-center"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                Get Started <FiArrowRight className="transition-transform group-hover:translate-x-1" />
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            </Link>
+            
+            <Link 
+              to="/learn-more" 
+              className="group relative bg-transparent border-2 border-white hover:bg-white/10 text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition-all hover:scale-105 overflow-hidden inline-flex items-center justify-center"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                Learn More <FiBookOpen className="transition-transform group-hover:scale-110" />
+              </span>
+              <span className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            </Link>
           </div>
         </div>
 
