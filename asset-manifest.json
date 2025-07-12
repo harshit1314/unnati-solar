@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/unnati-solar/static/css/main.dedb0c7c.css",
-    "main.js": "/unnati-solar/static/js/main.32974024.js",
+    "main.css": "/unnati-solar/static/css/main.f7c93c0e.css",
+    "main.js": "/unnati-solar/static/js/main.9b9c7388.js",
     "index.html": "/unnati-solar/index.html",
-    "main.dedb0c7c.css.map": "/unnati-solar/static/css/main.dedb0c7c.css.map",
-    "main.32974024.js.map": "/unnati-solar/static/js/main.32974024.js.map"
+    "main.f7c93c0e.css.map": "/unnati-solar/static/css/main.f7c93c0e.css.map",
+    "main.9b9c7388.js.map": "/unnati-solar/static/js/main.9b9c7388.js.map"
   },
   "entrypoints": [
-    "static/css/main.dedb0c7c.css",
-    "static/js/main.32974024.js"
+    "static/css/main.f7c93c0e.css",
+    "static/js/main.9b9c7388.js"
   ]
 }
