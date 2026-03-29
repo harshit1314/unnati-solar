@@ -10,7 +10,7 @@ const Pricing = () => {
   const plans = [
     {
       name: 'Residential',
-      price: '$2,999',
+      price: '₹2,49,999',
       description: 'Perfect for homeowners',
       features: [
         '5kW Solar Panel System',
@@ -25,7 +25,7 @@ const Pricing = () => {
     },
     {
       name: 'Commercial',
-      price: '$4,999',
+      price: '₹4,89,999',
       description: 'Ideal for businesses',
       features: [
         '8kW Solar Panel System',

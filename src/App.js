@@ -1,111 +1,19 @@
 // src/App.jsx
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { FiSun, FiX, FiMenu, FiMoon } from 'react-icons/fi';
+import { FiSun, FiMenu, FiMoon } from 'react-icons/fi';
 import Pricing from './pages/Pricing';
 import Services from './pages/Services';
 import CRM from './pages/CRM';
 import Hero from './components/Hero';
 import Testimonials from './components/Testimonials';
 import LiveChat from './components/LiveChat';
+import GetQuoteButton from './components/GetQuoteButton';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import GetStartedPage from './pages/GetStartedPage';
 import LearnMorePage from './pages/LearnMorePage';
 import SavingsCalculator from './pages/SavingsCalculator';
-
-const GetQuoteButton = ({ initialInterest = 'residential' }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    interest: initialInterest
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Quote request submitted:', formData);
-    setIsOpen(false);
-  };
-
-  return (
-    <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="get-quote-button fixed bottom-8 right-8 z-50 flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold py-4 px-6 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 animate-pulse hover:animate-none ring-4 ring-yellow-300/50 dark:ring-yellow-600/50"
-        data-interest={initialInterest}
-      >
-        <FiSun className="text-xl" />
-        Get a Free Quote
-      </button>
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-md w-full p-6 relative">
-            <button 
-              onClick={() => setIsOpen(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100"
-              aria-label="Close quote form"
-            >
-              <FiX size={24} />
-            </button>
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Solar Quote Request</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-1" htmlFor="name">Full Name*</label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 dark:bg-gray-700 dark:text-white"
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-1" htmlFor="email">Email*</label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 dark:bg-gray-700 dark:text-white"
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-1" htmlFor="phone">Phone</label>
-                <input
-                  id="phone"
-                  type="tel"
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 dark:bg-gray-700 dark:text-white"
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-300 mb-1" htmlFor="interest">Interest</label>
-                <select
-                  id="interest"
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 dark:bg-gray-700 dark:text-white"
-                  value={formData.interest}
-                  onChange={(e) => setFormData({...formData, interest: e.target.value})}
-                >
-                  <option value="residential">Residential</option>
-                  <option value="commercial">Commercial</option>
-                  <option value="industrial">Industrial</option>
-                </select>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-3 px-6 rounded-lg mt-4 transition-all duration-300"
-              >
-                Request Free Quote
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -246,7 +154,7 @@ function App() {
       </main>
 
       <LiveChat />
-      <GetQuoteButton />
+      <GetQuoteButton variant="floating" />
 
       <footer className="bg-gray-900 text-white py-16 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">

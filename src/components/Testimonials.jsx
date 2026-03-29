@@ -4,23 +4,21 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Button from './Button';
 
 const Testimonials = () => {
-  console.log('Testimonials component is rendering');
-
   const testimonials = [
     {
-      name: 'John D.',
-      quote: 'Unnati Renewables transformed our home with solar power, saving us 60% on our electricity bills!',
-      role: 'Homeowner, Bangalore',
+      name: 'Verified Homeowner',
+      quote: 'The team explained subsidy and system sizing clearly. Installation and approvals were handled step-by-step.',
+      role: 'Residential Rooftop, Bengaluru',
     },
     {
-      name: 'Sarah M.',
-      quote: 'The installation was seamless, and their support team is fantastic. Highly recommend!',
-      role: 'Residential Customer',
+      name: 'Verified Business Client',
+      quote: 'Our commercial quote included realistic generation assumptions and maintenance planning, which helped decision-making.',
+      role: 'Commercial Rooftop, Pune',
     },
     {
-      name: 'Green Corp',
-      quote: 'Our business reduced costs significantly with their commercial solar solution.',
-      role: 'Business Owner',
+      name: 'Verified Consumer',
+      quote: 'The seasonal bill analysis in the calculator matched our usage pattern much better than flat monthly estimates.',
+      role: 'Residential Rooftop, Lucknow',
     },
   ];
 

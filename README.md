@@ -1,111 +1,117 @@
-# Unnati Solar
+# Unnati Renewables - Solar Solutions Web App
 
-A modern, responsive website for Unnati Renewables, showcasing solar energy solutions, services, and tools to help customers transition to sustainable energy.
+A responsive React web app for a solar business workflow, combining educational content, savings estimation, lead capture, and CRM-style lead visibility.
 
-## Features
+## Project Description
 
-- **Hero Section**: Engaging landing page with call-to-action buttons.
-- **Services**: Overview of solar installation, maintenance, and consulting services.
-- **Pricing**: Transparent pricing plans for residential and commercial solar solutions.
-- **Savings Calculator**: Interactive tool to estimate potential savings from solar adoption.
-- **Testimonials**: Customer reviews and success stories with a carousel interface.
-- **About & Contact**: Company information and contact forms.
-- **CRM Integration**: Basic CRM page for lead management.
-- **Live Chat**: Integrated chat support component.
-- **Dark Mode**: Theme toggle for better user experience.
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices.
+- Built a modular React application for a solar solutions platform.
+- Added interactive customer journeys: savings calculator, quote capture, live chat, and lead dashboard.
+- Integrated backend-ready lead submission with local demo fallback for development.
+- Improved UX through dark-mode support, mobile-friendly layouts, and content trust sections.
 
-## Technologies Used
+## Key Features
 
-- **React**: Frontend framework for building the user interface.
-- **React Router**: For client-side routing between pages.
-- **Tailwind CSS**: Utility-first CSS framework for styling.
-- **Chart.js & React-Chartjs-2**: For data visualization in the savings calculator.
-- **React Icons**: Icon library for UI elements.
-- **Create React App**: Build setup and development server.
-- **GitHub Pages**: Hosting and deployment.
+- Solar savings calculator with INR-first outputs.
+- Seasonal billing mode (summer/monsoon/winter) with weighted average logic.
+- Subsidy-aware estimate flow, including UP + PM Surya Ghar logic for eligible residential paths.
+- Visual charts for bill impact, yearly savings, and seasonal pattern.
+- Quote proposal download as PDF.
+- One-click WhatsApp share of estimate highlights.
+- Multi-step Get a Free Quote modal with validation and review step.
+- Live chat assistant with quick prompts and conversation history.
+- CRM dashboard powered by captured leads (from local storage demo records).
+- India-focused Learn More and About pages with official-source reference footer sections.
+- Dark mode coverage across main pages and modal workflows.
 
-## Installation
+## Technology Stack
+
+- Frontend: React 18
+- Routing: React Router v7 (HashRouter)
+- Styling: Tailwind CSS
+- Charts: Chart.js + react-chartjs-2
+- PDF: jsPDF
+- Icons: react-icons
+- Build system: Create React App (react-scripts)
+
+## Application Routes
+
+- / : Homepage
+- /about : About and trust context
+- /services : Service catalog
+- /pricing : Plans and financing info
+- /calculator : Savings calculator
+- /contact : Contact form and office details
+- /get-started : Guided onboarding page
+- /learn-more : India-focused solar knowledge page
+- /crm : Lead dashboard
+
+## Lead Submission Behavior
+
+- If REACT_APP_API_BASE_URL is provided, lead submission uses API mode.
+- If not provided, submission uses local demo mode (stored in browser localStorage).
+- CRM page reads captured lead records and computes live dashboard metrics.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (LTS recommended)
+- npm
+
+### Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/harshit1314/unnati-solar.git
-   cd unnati-solar
-   ```
+
+```bash
+git clone https://github.com/harshit1314/unnati-solar.git
+cd unnati-solar
+```
 
 2. Install dependencies:
-   ```bash
-   npm install
-   ```
 
-## Usage
+```bash
+npm install
+```
 
-### Development
-To start the development server:
+### Run in Development
+
 ```bash
 npm start
 ```
-The app will run on `http://localhost:3000`.
 
-### Building for Production
-To build the app for production:
+Open http://localhost:3000 in your browser.
+
+## Build for Production
+
 ```bash
 npm run build
 ```
-The build artifacts will be stored in the `build/` directory.
 
-### Deployment
-To deploy to GitHub Pages:
+Production artifacts are generated in the build directory.
+
+## Deployment
+
+GitHub Pages deployment is configured via gh-pages:
+
 ```bash
 npm run deploy
 ```
-This will build the project and deploy it to the configured GitHub Pages URL.
 
-## Project Structure
+## Environment Variables (Optional)
 
-```
-unnati-solar/
-├── public/
-│   ├── index.html
-│   └── _redirects
-├── src/
-│   ├── components/
-│   │   ├── Button.js
-│   │   ├── GetQuoteButton.js
-│   │   ├── Hero.js
-│   │   ├── LiveChat.jsx
-│   │   └── Testimonials.jsx
-│   ├── pages/
-│   │   ├── About.js
-│   │   ├── Contact.js
-│   │   ├── CRM.js
-│   │   ├── GetStartedPage.js
-│   │   ├── LearnMorePage.js
-│   │   ├── Pricing.js
-│   │   ├── SavingsCalculator.jsx
-│   │   └── Services.js
-│   ├── App.js
-│   ├── index.css
-│   └── index.js
-├── build/
-├── package.json
-├── tailwind.config.js
-├── postcss.config.js
-└── README.md
-```
+For live lead API integration, define:
 
-## Contributing
+- REACT_APP_API_BASE_URL
+- REACT_APP_LEAD_ENDPOINT
 
-1. Fork the repository.
-2. Create a new branch for your feature: `git checkout -b feature-name`.
-3. Make your changes and commit them: `git commit -m 'Add some feature'`.
-4. Push to the branch: `git push origin feature-name`.
-5. Open a pull request.
+If omitted, the app automatically stores leads in demo mode.
+
+## Notes
+
+- Currency presentation is INR-focused.
+- Calculator outputs are planning estimates and should be validated by site survey and current DISCOM/policy rules.
+- Data-source and policy references are included in UI content sections.
 
 ## License
 
-This project is private and proprietary to Unnati Renewables.
-
-## Contact
-
-For questions or support, please contact us through the website or at [contact@unnati-renewables.com](mailto:contact@unnati-renewables.com).
+Private project. Unauthorized copying or redistribution is prohibited.

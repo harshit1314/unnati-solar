@@ -2,9 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FiMessageCircle } from 'react-icons/fi';
 
 const LiveChat = () => {
+  const getTimestamp = () =>
+    new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+
   const [chatOpen, setChatOpen] = useState(false);
+  const [isBotTyping, setIsBotTyping] = useState(false);
   const [chatMessages, setChatMessages] = useState([
-    { sender: 'bot', text: 'Hello! How can I assist you with solar solutions today?' },
+    { sender: 'bot', text: 'Hello! How can I assist you with solar solutions today?', time: getTimestamp() },
   ]);
   const [userMessage, setUserMessage] = useState('');
   const messagesEndRef = useRef(null);
@@ -26,21 +30,28 @@ const LiveChat = () => {
   }, [chatOpen]);
 
   const handleChatToggle = () => {
-    setChatOpen(!chatOpen);
+    setChatOpen((prev) => !prev);
+  };
+
+  const sendMessage = (messageText) => {
+    const trimmedMessage = messageText.trim();
+    if (!trimmedMessage) return;
+
+    const newUserMessage = { sender: 'user', text: trimmedMessage, time: getTimestamp() };
+    setChatMessages((prev) => [...prev, newUserMessage]);
+    setUserMessage('');
+    setIsBotTyping(true);
+
+    setTimeout(() => {
+      const botResponse = getBotResponse(trimmedMessage.toLowerCase());
+      setChatMessages(prev => [...prev, { sender: 'bot', text: botResponse, time: getTimestamp() }]);
+      setIsBotTyping(false);
+    }, 1000);
   };
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (userMessage.trim() === '') return;
-
-    const newUserMessage = { sender: 'user', text: userMessage };
-    setChatMessages([...chatMessages, newUserMessage]);
-    setUserMessage('');
-
-    setTimeout(() => {
-      const botResponse = getBotResponse(userMessage.toLowerCase());
-      setChatMessages(prev => [...prev, { sender: 'bot', text: botResponse }]);
-    }, 1000);
+    sendMessage(userMessage);
   };
 
   const getBotResponse = (message) => {
@@ -66,7 +77,15 @@ const LiveChat = () => {
   };
 
   const handleQuickQuestion = (question) => {
-    setUserMessage(question);
+    sendMessage(question);
+  };
+
+  const clearChat = () => {
+    setChatMessages([
+      { sender: 'bot', text: 'Chat reset. How can I help you with your solar query?', time: getTimestamp() },
+    ]);
+    setUserMessage('');
+    setIsBotTyping(false);
   };
 
   const handleQuoteClick = () => {
@@ -81,7 +100,7 @@ const LiveChat = () => {
 
   return (
     <div 
-      className={`fixed bottom-8 left-8 transition-all duration-300 ${chatOpen ? 'h-96 w-80' : 'h-16 w-16'}`} 
+      className={`fixed z-40 transition-all duration-300 left-4 bottom-4 sm:left-8 sm:bottom-8 ${chatOpen ? 'h-[32rem] w-[calc(100vw-2rem)] sm:h-96 sm:w-80' : 'h-16 w-16'}`} 
       role="dialog" 
       aria-labelledby="chatbot-title"
       aria-hidden={!chatOpen}
@@ -91,15 +110,24 @@ const LiveChat = () => {
           <>
             <div className="bg-gradient-to-r from-yellow-500 to-amber-600 p-4 flex justify-between items-center">
               <h3 id="chatbot-title" className="text-lg font-medium text-white">Live Chat</h3>
-              <button 
-                onClick={handleChatToggle}
-                className="text-white hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                aria-label="Close live chat"
-              >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={clearChat}
+                  className="text-xs px-2 py-1 rounded bg-white/20 text-white hover:bg-white/30"
+                  aria-label="Clear live chat history"
+                >
+                  Clear
+                </button>
+                <button 
+                  onClick={handleChatToggle}
+                  className="text-white hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  aria-label="Close live chat"
+                >
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
             </div>
             
             <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50 dark:bg-gray-700">
@@ -114,9 +142,17 @@ const LiveChat = () => {
                       : 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-300'}`}
                   >
                     <p className="text-sm">{msg.text}</p>
+                    <p className="text-[10px] mt-1 opacity-70">{msg.time}</p>
                   </div>
                 </div>
               ))}
+              {isBotTyping && (
+                <div className="flex justify-start">
+                  <div className="rounded-lg p-3 max-w-xs bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-300">
+                    <p className="text-sm">Typing...</p>
+                  </div>
+                </div>
+              )}
               <div ref={messagesEndRef} />
             </div>
             

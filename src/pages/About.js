@@ -1,40 +1,33 @@
 import React from 'react';
 import { FiSun, FiShield, FiAward, FiUsers, FiGlobe } from 'react-icons/fi';
+import DataSourcesFooter from '../components/DataSourcesFooter';
 
 const About = () => {
-  const teamMembers = [
+  const leadershipFunctions = [
     {
-      name: 'Rahul Sharma',
-      role: 'Founder & CEO',
-      bio: 'Solar industry veteran with 15+ years of experience in renewable energy solutions.',
-      image: 'https://randomuser.me/api/portraits/men/32.jpg'
+      role: 'Project Advisory',
+      bio: 'Supports system design choices, feasibility checks, and long-term generation planning.'
     },
     {
-      name: 'Priya Patel',
-      role: 'Chief Technology Officer',
-      bio: 'Expert in solar panel technology and energy storage systems.',
-      image: 'https://randomuser.me/api/portraits/women/44.jpg'
+      role: 'Technical Design',
+      bio: 'Focuses on panel layout, inverter sizing, and BOS optimization for rooftop performance.'
     },
     {
-      name: 'Amit Singh',
-      role: 'Installation Director',
-      bio: 'Leads our nationwide team of certified solar installers.',
-      image: 'https://randomuser.me/api/portraits/men/22.jpg'
+      role: 'Installation & Safety',
+      bio: 'Coordinates site execution standards, electrical safety compliance, and commissioning checks.'
     },
     {
-      name: 'Neha Gupta',
-      role: 'Customer Success',
-      bio: 'Ensures every client has an exceptional solar experience.',
-      image: 'https://randomuser.me/api/portraits/women/68.jpg'
+      role: 'Customer Support',
+      bio: 'Assists with approvals, subsidy workflow guidance, and post-installation service escalation.'
     }
   ];
 
   const stats = [
-    { value: '10,000+', label: 'Solar Panels Installed', icon: <FiSun /> },
-    { value: '25+', label: 'Years Warranty', icon: <FiShield /> },
-    { value: '4.9/5', label: 'Customer Rating', icon: <FiAward /> },
-    { value: '50+', label: 'Team Members', icon: <FiUsers /> },
-    { value: '5 MW', label: 'Clean Energy Generated', icon: <FiGlobe /> }
+    { value: '70+ GW', label: 'India Installed Solar Capacity (Public reports, approx.)', icon: <FiSun /> },
+    { value: '500 GW', label: 'India Non-Fossil Target by 2030', icon: <FiGlobe /> },
+    { value: '25 Years', label: 'Typical Panel Performance Warranty Range', icon: <FiShield /> },
+    { value: 'Net Metering', label: 'Available in Many States (Policy-dependent)', icon: <FiAward /> },
+    { value: 'Subsidy Linked', label: 'Residential Support via National/State Programs', icon: <FiUsers /> }
   ];
 
   return (
@@ -56,6 +49,27 @@ const About = () => {
             Our mission is to make clean, affordable solar energy accessible to everyone.
           </p>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-10">
+        <div className="rounded-lg border border-yellow-200 dark:border-yellow-700/40 bg-yellow-50 dark:bg-yellow-900/20 p-4">
+          <p className="text-xs text-gray-700 dark:text-gray-300">
+            Snapshot note: National values are indicative and based on public policy and sector updates.
+            For latest numbers, check MNRE, CEA, and state DISCOM portals.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+        <DataSourcesFooter
+          reviewedDate="March 2026"
+          note="Capacity figures and policy references evolve over time. Validate the latest values before using them in external reports or proposals."
+          sources={[
+            { label: 'MNRE', url: 'https://mnre.gov.in' },
+            { label: 'CEA', url: 'https://cea.nic.in' },
+            { label: 'PM Surya Ghar Portal', url: 'https://pmsuryaghar.gov.in' },
+          ]}
+        />
       </div>
 
       {/* Our Story */}
@@ -164,30 +178,23 @@ const About = () => {
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
-              Meet Our Team
+              Core Functions Behind Each Project
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-500 dark:text-gray-300">
-              Passionate experts driving India's solar revolution
+              Role-based experts supporting planning, approvals, installation, and lifecycle support.
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {teamMembers.map((member, index) => (
+            {leadershipFunctions.map((member, index) => (
               <div key={index} className="pt-6">
                 <div className="flow-root bg-white dark:bg-gray-800 rounded-lg px-6 pb-8 h-full shadow-sm border border-gray-200 dark:border-gray-600">
                   <div className="-mt-6">
-                    <div className="flex items-center justify-center h-24 w-24 rounded-full bg-white dark:bg-gray-800 border-4 border-yellow-500 dark:border-amber-600 mx-auto overflow-hidden shadow-md">
-                      <img
-                        className="h-full w-full object-cover"
-                        src={member.image}
-                        alt={member.name}
-                      />
+                    <div className="flex items-center justify-center h-24 w-24 rounded-full bg-yellow-100 dark:bg-amber-800 border-4 border-yellow-500 dark:border-amber-600 mx-auto overflow-hidden shadow-md text-2xl font-bold text-yellow-700 dark:text-yellow-200">
+                      {member.role.split(' ').map((word) => word[0]).join('').slice(0, 2)}
                     </div>
                     <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white text-center">
-                      {member.name}
-                    </h3>
-                    <p className="mt-1 text-sm text-yellow-600 dark:text-yellow-400 text-center">
                       {member.role}
-                    </p>
+                    </h3>
                     <p className="mt-4 text-sm text-gray-500 dark:text-gray-300 text-center">
                       {member.bio}
                     </p>

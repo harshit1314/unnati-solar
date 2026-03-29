@@ -13,7 +13,7 @@ const Hero = () => {
           animation: 'panImage 30s linear infinite alternate'
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70 dark:from-black/50 dark:via-black/70 dark:to-black/80" />
       </div>
 
       {/* Content */}
@@ -58,7 +58,7 @@ const Hero = () => {
         </div>
 
         {/* Stats Bar */}
-        <div className="absolute bottom-0 left-0 right-0 bg-black/50 py-4">
+        <div className="absolute bottom-0 left-0 right-0 bg-black/50 dark:bg-black/70 py-4">
           <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
             <div className="text-center">
               <p className="text-3xl font-bold text-yellow-400">10K+</p>
