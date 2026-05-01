@@ -41,8 +41,8 @@ Agra's #1 UPNEDA empanelled solar installer. This platform is a high-converting 
    REACT_APP_SUPABASE_URL=your_project_url
    REACT_APP_SUPABASE_ANON_KEY=your_anon_key
    REACT_APP_SUPABASE_SERVICE_KEY=your_service_key
-   REACT_APP_CRM_PASSWORD=solarhub2024
-   REACT_APP_WHATSAPP_NUMBER=918384835981
+   REACT_APP_CRM_PASSWORD=your_password
+   REACT_APP_WHATSAPP_NUMBER=91XXXXXXXXXX
    ```
 
 4. **Run locally:**
