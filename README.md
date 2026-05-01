@@ -1,117 +1,67 @@
-# Unnati Renewables - Solar Solutions Web App
+# SolarHub — Save Money Save Future ☀️
 
-A responsive React web app for a solar business workflow, combining educational content, savings estimation, lead capture, and CRM-style lead visibility.
+Agra's #1 UPNEDA empanelled solar installer. This platform is a high-converting lead generation website designed to capture qualified solar leads and forward them to SolarHub via WhatsApp and Supabase CRM.
 
-## Project Description
+## 🚀 Live Demo
+[Deploying to Vercel...] (Coming soon)
 
-- Built a modular React application for a solar solutions platform.
-- Added interactive customer journeys: savings calculator, quote capture, live chat, and lead dashboard.
-- Integrated backend-ready lead submission with local demo fallback for development.
-- Improved UX through dark-mode support, mobile-friendly layouts, and content trust sections.
+## ✨ Key Features
+- **PM Surya Ghar Subsidy Calculator**: Accurate ROI, EMI, and "Day-1 Profit" calculations based on latest 2024 government slabs (₹78,000 max subsidy).
+- **Multi-Step Lead Form**: High-conversion form with React Portals for seamless UI.
+- **Supabase Integration**: Real-time lead capture and persistent storage.
+- **Admin CRM Dashboard**: Password-protected dashboard for managing leads, updating statuses, and exporting data.
+- **WhatsApp Automation**: Instant lead forwarding with prefilled professional messages.
+- **Pincode Checker**: Instant service area validation for Agra + 50km radius.
+- **Premium UI**: Modern, responsive design with glassmorphism, dark mode support, and smooth animations.
 
-## Key Features
+## 🛠️ Tech Stack
+- **Frontend**: React 18, Tailwind CSS, Framer Motion
+- **Routing**: React Router v7 (BrowserRouter)
+- **Database/Backend**: Supabase (PostgreSQL)
+- **Charts**: Chart.js
+- **SEO**: React Helmet Async
+- **Icons**: React Icons, FontAwesome
 
-- Solar savings calculator with INR-first outputs.
-- Seasonal billing mode (summer/monsoon/winter) with weighted average logic.
-- Subsidy-aware estimate flow, including UP + PM Surya Ghar logic for eligible residential paths.
-- Visual charts for bill impact, yearly savings, and seasonal pattern.
-- Quote proposal download as PDF.
-- One-click WhatsApp share of estimate highlights.
-- Multi-step Get a Free Quote modal with validation and review step.
-- Live chat assistant with quick prompts and conversation history.
-- CRM dashboard powered by captured leads (from local storage demo records).
-- India-focused Learn More and About pages with official-source reference footer sections.
-- Dark mode coverage across main pages and modal workflows.
+## 🛠️ Local Setup
 
-## Technology Stack
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/harshit1314/unnati-solar.git
+   cd unnati-solar
+   ```
 
-- Frontend: React 18
-- Routing: React Router v7 (HashRouter)
-- Styling: Tailwind CSS
-- Charts: Chart.js + react-chartjs-2
-- PDF: jsPDF
-- Icons: react-icons
-- Build system: Create React App (react-scripts)
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-## Application Routes
+3. **Configure Environment Variables:**
+   Create a `.env.local` file (use `.env.example` as a template):
+   ```env
+   REACT_APP_SUPABASE_URL=your_project_url
+   REACT_APP_SUPABASE_ANON_KEY=your_anon_key
+   REACT_APP_SUPABASE_SERVICE_KEY=your_service_key
+   REACT_APP_CRM_PASSWORD=solarhub2024
+   REACT_APP_WHATSAPP_NUMBER=918384835981
+   ```
 
-- / : Homepage
-- /about : About and trust context
-- /services : Service catalog
-- /pricing : Plans and financing info
-- /calculator : Savings calculator
-- /contact : Contact form and office details
-- /get-started : Guided onboarding page
-- /learn-more : India-focused solar knowledge page
-- /crm : Lead dashboard
+4. **Run locally:**
+   ```bash
+   npm start
+   ```
 
-## Lead Submission Behavior
+## 📦 Deployment (Vercel)
 
-- If REACT_APP_API_BASE_URL is provided, lead submission uses API mode.
-- If not provided, submission uses local demo mode (stored in browser localStorage).
-- CRM page reads captured lead records and computes live dashboard metrics.
+1. Connect your GitHub repository to [Vercel](https://vercel.com).
+2. Add all `REACT_APP_` environment variables in the Vercel project settings.
+3. Vercel will automatically detect the React build settings.
+4. Deploy!
 
-## Getting Started
+## 📜 Business Info
+- **Business Name**: SolarHub
+- **Parent Entity**: Seema Electronics
+- **UPNEDA Vendor Code**: AGC2512234235
+- **Service Area**: Agra, Mathura, Firozabad (UP)
 
-### Prerequisites
-
-- Node.js (LTS recommended)
-- npm
-
-### Installation
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/harshit1314/unnati-solar.git
-cd unnati-solar
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-### Run in Development
-
-```bash
-npm start
-```
-
-Open http://localhost:3000 in your browser.
-
-## Build for Production
-
-```bash
-npm run build
-```
-
-Production artifacts are generated in the build directory.
-
-## Deployment
-
-GitHub Pages deployment is configured via gh-pages:
-
-```bash
-npm run deploy
-```
-
-## Environment Variables (Optional)
-
-For live lead API integration, define:
-
-- REACT_APP_API_BASE_URL
-- REACT_APP_LEAD_ENDPOINT
-
-If omitted, the app automatically stores leads in demo mode.
-
-## Notes
-
-- Currency presentation is INR-focused.
-- Calculator outputs are planning estimates and should be validated by site survey and current DISCOM/policy rules.
-- Data-source and policy references are included in UI content sections.
-
-## License
-
-Private project. Unauthorized copying or redistribution is prohibited.
+---
+Developed with ❤️ for SolarHub.

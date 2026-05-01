@@ -1,0 +1,17 @@
+{
+  "short_name": "SolarHub",
+  "name": "SolarHub — Solar Installer Agra",
+  "description": "UPNEDA empanelled solar installer in Agra. PM Surya Ghar subsidy, EMI, DVVNL net metering — handled by us.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#F59E0B",
+  "background_color": "#1E3A8A",
+  "orientation": "portrait"
+}

@@ -1,98 +1,126 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FiArrowRight, FiBookOpen } from 'react-icons/fi';
+// src/components/Hero.js
+// SolarHub Hero — Hindi headline, dual CTA, trust badges, stats bar
+import React, { useState } from 'react';
+import { BUSINESS, WHATSAPP_URL } from '../content/business';
 
-const Hero = () => {
+const Hero = ({ onOpenQuoteForm }) => {
+  const [hovered, setHovered] = useState(null);
+
+  const handleWhatsApp = () => {
+    if (window.gtag) window.gtag('event', 'whatsapp_clicked', { event_label: 'hero' });
+    window.open(
+      WHATSAPP_URL(`Namaste SolarHub! Main solar installation ke liye free quote chahta/chahti hun. Please contact karein.`),
+      '_blank', 'noopener,noreferrer'
+    );
+  };
+
+  const handleSiteVisit = () => {
+    if (window.gtag) window.gtag('event', 'site_visit_clicked', { event_label: 'hero' });
+    if (onOpenQuoteForm) onOpenQuoteForm();
+  };
+
   return (
-    <div className="relative h-screen overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div 
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Background */}
+      <div
         className="absolute inset-0 bg-cover bg-center z-0"
-        style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80")',
-          animation: 'panImage 30s linear infinite alternate'
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80")',
+          animation: 'panImage 30s linear infinite alternate',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/70 dark:from-black/50 dark:via-black/70 dark:to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 via-blue-900/70 to-gray-900/90" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-4 sm:px-6 lg:px-8">
+      {/* Trust badge strip */}
+      <div className="relative z-10 bg-amber-400 text-gray-900 text-xs sm:text-sm font-semibold py-2 px-4 text-center flex flex-wrap justify-center gap-x-6 gap-y-1">
+        <span>✅ UPNEDA Empanelled — {BUSINESS.upnedaCode}</span>
+        <span>✅ PM Surya Ghar Subsidy — ₹78,000 tak</span>
+        <span>✅ Free Site Visit — Agra + 50km</span>
+      </div>
+
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col justify-center min-h-[calc(100vh-40px)] px-4 sm:px-6 lg:px-8 pt-8 pb-32">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Animated Solar Panel Icon */}
-          <div className="mb-8 animate-float">
-            <svg className="w-20 h-20 mx-auto text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
+
+          {/* Govt scheme badge */}
+          <div className="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-400/50 text-amber-300 text-sm font-medium px-4 py-2 rounded-full mb-8 backdrop-blur-sm">
+            <span className="text-lg">☀️</span>
+            PM Surya Ghar Muft Bijli Yojana — Subsidised Solar Available
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            Powering <span className="text-yellow-400">Your Future</span> With Solar
+          {/* Hindi headline */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4"
+            style={{ fontFamily: "'Noto Sans Devanagari', 'Inter', sans-serif" }}>
+            <span className="text-amber-400">Aap bas bill bhejo,</span>
+            <br />
+            <span>baaki sab humara kaam.</span>
           </h1>
-          
-          <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
-            Sustainable, affordable solar solutions for homes and businesses. Save money while saving the planet.
+
+          {/* English subheading */}
+          <p className="text-lg sm:text-xl text-gray-200 mb-4 max-w-2xl mx-auto leading-relaxed">
+            You just send your electricity bill — SolarHub handles the site survey, PM Surya Ghar subsidy application, DVVNL net metering, and installation.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link 
-              to="/get-started" 
-              className="group relative bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-gray-900 font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition-all hover:scale-105 overflow-hidden inline-flex items-center justify-center"
-            >
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                Get Started <FiArrowRight className="transition-transform group-hover:translate-x-1" />
-              </span>
-              <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-            </Link>
-            
-            <Link 
-              to="/learn-more" 
-              className="group relative bg-transparent border-2 border-white hover:bg-white/10 text-white font-bold py-4 px-8 rounded-lg text-lg shadow-lg transform transition-all hover:scale-105 overflow-hidden inline-flex items-center justify-center"
-            >
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                Learn More <FiBookOpen className="transition-transform group-hover:scale-110" />
-              </span>
-              <span className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-            </Link>
-          </div>
-        </div>
+          <p className="text-amber-300 font-semibold mb-10 text-base">
+            Agra ka UPNEDA empanelled solar installer &mdash; serving Agra, Mathura, Firozabad &amp; 50km radius
+          </p>
 
-        {/* Stats Bar */}
-        <div className="absolute bottom-0 left-0 right-0 bg-black/50 dark:bg-black/70 py-4">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
-            <div className="text-center">
-              <p className="text-3xl font-bold text-yellow-400">10K+</p>
-              <p className="text-gray-300">Installations</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-yellow-400">75%</p>
-              <p className="text-gray-300">Energy Savings</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-yellow-400">25+</p>
-              <p className="text-gray-300">Years Warranty</p>
-            </div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-yellow-400">4.9★</p>
-              <p className="text-gray-300">Customer Rating</p>
-            </div>
+          {/* Dual CTA */}
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+            <button
+              onClick={handleSiteVisit}
+              onMouseEnter={() => setHovered('visit')}
+              onMouseLeave={() => setHovered(null)}
+              id="hero-site-visit-btn"
+              className="group relative inline-flex items-center justify-center gap-3 bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold py-4 px-8 rounded-xl text-lg shadow-2xl transition-all duration-300 hover:scale-105 min-h-[56px]"
+            >
+              <span className="text-2xl">📞</span>
+              Free Site Visit Book Karein
+              <span className="absolute inset-0 rounded-xl bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
+            </button>
+
+            <button
+              onClick={handleWhatsApp}
+              onMouseEnter={() => setHovered('wa')}
+              onMouseLeave={() => setHovered(null)}
+              id="hero-whatsapp-btn"
+              className="group relative inline-flex items-center justify-center gap-3 bg-green-500 hover:bg-green-400 text-white font-bold py-4 px-8 rounded-xl text-lg shadow-2xl transition-all duration-300 hover:scale-105 min-h-[56px]"
+            >
+              <span className="text-2xl">💬</span>
+              WhatsApp Quote
+              <span className="absolute inset-0 rounded-xl bg-white opacity-0 group-hover:opacity-10 transition-opacity" />
+            </button>
           </div>
+
+          {/* CTA micro-copy */}
+          <p className="text-gray-400 text-sm">
+            No spam. No obligation. Response within 2 hours on working days.
+          </p>
         </div>
       </div>
 
-      {/* Animation Keyframes (add to your CSS) */}
-      <style jsx>{`
+      {/* Stats bar */}
+      <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-md py-5 z-10">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-6">
+          {[
+            { value: '200+', label: 'Installations in Agra' },
+            { value: '₹78K', label: 'Max Subsidy Available' },
+            { value: '25 yr', label: 'Panel Warranty' },
+            { value: 'UPNEDA', label: `Vendor: ${BUSINESS.upnedaCode}` },
+          ].map((stat, i) => (
+            <div key={i} className="text-center">
+              <p className="text-2xl sm:text-3xl font-extrabold text-amber-400">{stat.value}</p>
+              <p className="text-gray-300 text-xs sm:text-sm mt-1">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
         @keyframes panImage {
           0% { transform: scale(1) translateX(0); }
-          100% { transform: scale(1.1) translateX(-5%); }
-        }
-        @keyframes float {
-          0% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-          100% { transform: translateY(0px); }
-        }
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
+          100% { transform: scale(1.08) translateX(-4%); }
         }
       `}</style>
     </div>

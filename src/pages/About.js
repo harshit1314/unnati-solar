@@ -1,232 +1,194 @@
+// src/pages/About.js
+// SolarHub About / Trust page
 import React from 'react';
-import { FiSun, FiShield, FiAward, FiUsers, FiGlobe } from 'react-icons/fi';
-import DataSourcesFooter from '../components/DataSourcesFooter';
+import { Helmet } from 'react-helmet-async';
+import { BUSINESS, WHATSAPP_URL } from '../content/business';
 
-const About = () => {
-  const leadershipFunctions = [
-    {
-      role: 'Project Advisory',
-      bio: 'Supports system design choices, feasibility checks, and long-term generation planning.'
-    },
-    {
-      role: 'Technical Design',
-      bio: 'Focuses on panel layout, inverter sizing, and BOS optimization for rooftop performance.'
-    },
-    {
-      role: 'Installation & Safety',
-      bio: 'Coordinates site execution standards, electrical safety compliance, and commissioning checks.'
-    },
-    {
-      role: 'Customer Support',
-      bio: 'Assists with approvals, subsidy workflow guidance, and post-installation service escalation.'
-    }
-  ];
+const TeamCard = ({ name, role, phone, description }) => (
+  <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 text-center">
+    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-4xl mx-auto mb-4 shadow-lg">
+      {name.charAt(0)}
+    </div>
+    <h3 className="font-extrabold text-gray-900 dark:text-white text-lg">{name}</h3>
+    <p className="text-amber-600 dark:text-amber-400 text-sm font-semibold mb-2">{role}</p>
+    <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{description}</p>
+    <a href={`tel:${phone}`} className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400 hover:underline">
+      📞 {phone}
+    </a>
+  </div>
+);
 
-  const stats = [
-    { value: '70+ GW', label: 'India Installed Solar Capacity (Public reports, approx.)', icon: <FiSun /> },
-    { value: '500 GW', label: 'India Non-Fossil Target by 2030', icon: <FiGlobe /> },
-    { value: '25 Years', label: 'Typical Panel Performance Warranty Range', icon: <FiShield /> },
-    { value: 'Net Metering', label: 'Available in Many States (Policy-dependent)', icon: <FiAward /> },
-    { value: 'Subsidy Linked', label: 'Residential Support via National/State Programs', icon: <FiUsers /> }
-  ];
+const About = () => (
+  <>
+    <Helmet>
+      <title>About SolarHub — UPNEDA Empanelled Solar Installer Agra</title>
+      <meta name="description" content="Learn about SolarHub (Seema Electronics), Agra's UPNEDA empanelled solar installer. Vendor Code AGC2512234235. Meet our team: Harshit Agarwal & Divyansh Garg." />
+    </Helmet>
 
-  return (
-    <div className="bg-white dark:bg-gray-900">
-      {/* Hero Section */}
-      <div className="relative bg-gray-900">
-        <div className="absolute inset-0">
-          <img
-            className="w-full h-full object-cover opacity-40"
-            src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            alt="Solar panels"
-          />
-        </div>
-        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Powering a Brighter Future
-          </h1>
-          <p className="mt-6 text-xl text-yellow-300 dark:text-yellow-200 max-w-3xl mx-auto">
-            Our mission is to make clean, affordable solar energy accessible to everyone.
-          </p>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-10">
-        <div className="rounded-lg border border-yellow-200 dark:border-yellow-700/40 bg-yellow-50 dark:bg-yellow-900/20 p-4">
-          <p className="text-xs text-gray-700 dark:text-gray-300">
-            Snapshot note: National values are indicative and based on public policy and sector updates.
-            For latest numbers, check MNRE, CEA, and state DISCOM portals.
-          </p>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
-        <DataSourcesFooter
-          reviewedDate="March 2026"
-          note="Capacity figures and policy references evolve over time. Validate the latest values before using them in external reports or proposals."
-          sources={[
-            { label: 'MNRE', url: 'https://mnre.gov.in' },
-            { label: 'CEA', url: 'https://cea.nic.in' },
-            { label: 'PM Surya Ghar Portal', url: 'https://pmsuryaghar.gov.in' },
-          ]}
-        />
-      </div>
-
-      {/* Our Story */}
-      <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-        <div className="lg:grid lg:grid-cols-2 lg:gap-16">
-          <div>
-            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
-              Our Story
-            </h2>
-            <p className="mt-4 text-lg text-gray-500 dark:text-gray-300">
-              Founded in 2010, Unnati Renewables began as a small team of solar enthusiasts in Bangalore. 
-              Today, we're one of India's fastest-growing solar energy companies with operations across 
-              8 states.
-            </p>
-            <p className="mt-4 text-lg text-gray-500 dark:text-gray-300">
-              What started as a mission to bring solar power to rural communities has evolved into 
-              comprehensive renewable energy solutions for homes, businesses, and industries.
-            </p>
-          </div>
-          <div className="mt-12 lg:mt-0">
-            <img
-              className="w-full rounded-lg shadow-xl"
-              src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-              alt="Team working on solar panels"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="bg-yellow-50 dark:bg-amber-900/50">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-5">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="flex items-center justify-center h-12 w-12 mx-auto rounded-full bg-yellow-100 dark:bg-amber-800 text-yellow-600 dark:text-yellow-400">
-                  {stat.icon}
-                </div>
-                <p className="mt-4 text-3xl font-extrabold text-gray-900 dark:text-white">{stat.value}</p>
-                <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-300">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Our Values */}
-      <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
-            Our Values
-          </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-500 dark:text-gray-300">
-            These principles guide everything we do at Unnati Renewables
-          </p>
-        </div>
-        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              name: 'Sustainability',
-              description: "We're committed to solutions that benefit both people and the planet.",
-              icon: '🌍'
-            },
-            {
-              name: 'Innovation',
-              description: 'Constantly pushing boundaries in solar technology and service.',
-              icon: '💡'
-            },
-            {
-              name: 'Integrity',
-              description: 'Honest recommendations and transparent pricing always.',
-              icon: '🤝'
-            },
-            {
-              name: 'Quality',
-              description: 'Using only the highest-grade materials and installation practices.',
-              icon: '🏆'
-            },
-            {
-              name: 'Community',
-              description: 'Empowering local communities through renewable energy.',
-              icon: '👥'
-            },
-            {
-              name: 'Growth',
-              description: 'Helping our employees and customers thrive together.',
-              icon: '📈'
-            }
-          ].map((value, index) => (
-            <div
-              key={index}
-              className="pt-10 pb-8 px-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl text-center hover:shadow-lg transition-shadow duration-300"
-            >
-              <div className="w-16 h-16 mx-auto flex items-center justify-center bg-yellow-100 dark:bg-amber-800 rounded-full text-3xl mb-6 text-yellow-600 dark:text-yellow-400">
-                {value.icon}
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{value.name}</h3>
-              <p className="text-gray-600 dark:text-gray-300">{value.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Team Section */}
-      <div className="bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
-              Core Functions Behind Each Project
-            </h2>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-500 dark:text-gray-300">
-              Role-based experts supporting planning, approvals, installation, and lifecycle support.
-            </p>
-          </div>
-          <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {leadershipFunctions.map((member, index) => (
-              <div key={index} className="pt-6">
-                <div className="flow-root bg-white dark:bg-gray-800 rounded-lg px-6 pb-8 h-full shadow-sm border border-gray-200 dark:border-gray-600">
-                  <div className="-mt-6">
-                    <div className="flex items-center justify-center h-24 w-24 rounded-full bg-yellow-100 dark:bg-amber-800 border-4 border-yellow-500 dark:border-amber-600 mx-auto overflow-hidden shadow-md text-2xl font-bold text-yellow-700 dark:text-yellow-200">
-                      {member.role.split(' ').map((word) => word[0]).join('').slice(0, 2)}
-                    </div>
-                    <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white text-center">
-                      {member.role}
-                    </h3>
-                    <p className="mt-4 text-sm text-gray-500 dark:text-gray-300 text-center">
-                      {member.bio}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="bg-gradient-to-r from-yellow-500 to-amber-600">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
-          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-            <span className="block">Ready to go solar?</span>
-            <span className="block text-gray-800 dark:text-gray-200">Get your free consultation today.</span>
-          </h2>
-          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="inline-flex rounded-md shadow">
-              <button
-                onClick={() => document.querySelector('.get-quote-button')?.click()}
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-yellow-600 bg-white dark:bg-gray-800 hover:bg-yellow-50 dark:hover:bg-gray-700 dark:text-yellow-400"
-              >
-                Contact Us
-              </button>
-            </div>
-          </div>
-        </div>
+    {/* Hero */}
+    <div className="bg-gradient-to-br from-blue-900 to-blue-950 py-20 px-6 text-center">
+      <div className="max-w-3xl mx-auto">
+        <span className="inline-block bg-amber-400/20 text-amber-300 border border-amber-400/40 text-sm font-semibold px-4 py-2 rounded-full mb-6">
+          UPNEDA Vendor: {BUSINESS.upnedaCode}
+        </span>
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">
+          Agra Ka Apna Solar Expert
+        </h1>
+        <p className="text-blue-200 text-lg">
+          SolarHub (Seema Electronics) — Fatehabad Road, Taj Ganj, Agra mein 2019 se solar installations kar rahe hain.
+          UPNEDA ke empanelled vendor aur PM Surya Ghar application ke specialist.
+        </p>
       </div>
     </div>
-  );
-};
+
+    {/* UPNEDA Empanelment Box */}
+    <section className="py-16 bg-amber-50 dark:bg-gray-900">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-amber-400 p-8 shadow-xl">
+          <div className="flex flex-col sm:flex-row items-center gap-6">
+            <div className="text-6xl">🏛️</div>
+            <div className="flex-1">
+              <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-2">
+                UPNEDA Empanelled Vendor
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                SolarHub officially approved hai UP New &amp; Renewable Energy Development Agency (UPNEDA) ke through.
+                Iska matlab hai ki hamare through lagaya gaya system PM Surya Ghar subsidy ke liye eligible hai.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl px-5 py-3">
+                  <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">Vendor Code</p>
+                  <p className="text-xl font-extrabold text-amber-700 dark:text-amber-300 font-mono">{BUSINESS.upnedaCode}</p>
+                </div>
+                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl px-5 py-3">
+                  <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">DISCOM</p>
+                  <p className="text-sm font-bold text-amber-700 dark:text-amber-300">DVVNL</p>
+                </div>
+                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl px-5 py-3">
+                  <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">Scheme</p>
+                  <p className="text-sm font-bold text-amber-700 dark:text-amber-300">PM Surya Ghar</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Our Story */}
+    <section className="py-16 bg-white dark:bg-gray-900">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-4">Hamari Kahani</h2>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+              SolarHub, <strong>Seema Electronics</strong> ka solar division hai — jo Agra mein electronics aur electrical
+              equipment distribution mein 20+ saal ka experience rakhti hai.
+            </p>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+              Jab PM Surya Ghar Muft Bijli Yojana launch hui, humne dekha ki Agra ke log subsidy ke bare mein jankar bhi
+              apply nahi kar pa rahe the — kyunki process complicated lagta hai. Humne tab decide kiya ki hum poora process
+              handle karenge — application se le kar installation aur DVVNL net metering tak.
+            </p>
+            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              Aaj <strong>200+ successful installations</strong> ke saath hum Agra ka trusted solar partner hain —
+              Mathura, Vrindavan, Firozabad aur surrounding areas mein.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { n: '200+', l: 'Installations' },
+              { n: '₹78K', l: 'Max Subsidy' },
+              { n: '25yr', l: 'Warranty' },
+              { n: '50km', l: 'Service Radius' },
+            ].map(({ n, l }) => (
+              <div key={l} className="bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl p-6 text-center text-gray-900 shadow-lg">
+                <p className="text-3xl font-extrabold">{n}</p>
+                <p className="text-sm font-semibold mt-1">{l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Team */}
+    <section className="py-16 bg-gray-50 dark:bg-gray-800">
+      <div className="max-w-4xl mx-auto px-6">
+        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white text-center mb-10">Hamari Team</h2>
+        <div className="grid sm:grid-cols-2 gap-6">
+          <TeamCard
+            name={BUSINESS.contacts.primary.name}
+            role={BUSINESS.contacts.primary.role}
+            phone={BUSINESS.contacts.primary.phone}
+            description="Solar system design aur DVVNL net metering expert. 100+ commercial aur residential installations successfully completed."
+          />
+          <TeamCard
+            name={BUSINESS.contacts.secondary.name}
+            role={BUSINESS.contacts.secondary.role}
+            phone={BUSINESS.contacts.secondary.phone}
+            description="20+ saal ka electrical aur solar industry experience. PM Surya Ghar subsidy applications mein specialist. Directly handle karte hain sabhi site surveys."
+          />
+        </div>
+      </div>
+    </section>
+
+    {/* Address + Map */}
+    <section className="py-16 bg-white dark:bg-gray-900">
+      <div className="max-w-4xl mx-auto px-6">
+        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white text-center mb-10">Hamare Office Aaiye</h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 space-y-4">
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider mb-1">Address</p>
+                <p className="text-gray-900 dark:text-white font-medium">{BUSINESS.address.line1}</p>
+                <p className="text-gray-700 dark:text-gray-300">{BUSINESS.address.line2}</p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider mb-1">Phone</p>
+                <a href={`tel:${BUSINESS.contacts.primary.phone}`} className="text-blue-600 dark:text-blue-400 font-semibold block hover:underline">{BUSINESS.contacts.primary.phone}</a>
+                <a href={`tel:${BUSINESS.contacts.secondary.phone}`} className="text-blue-600 dark:text-blue-400 font-semibold block hover:underline">{BUSINESS.contacts.secondary.phone}</a>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider mb-1">Email</p>
+                <a href={`mailto:${BUSINESS.contacts.email}`} className="text-blue-600 dark:text-blue-400 hover:underline">{BUSINESS.contacts.email}</a>
+              </div>
+              <a href={BUSINESS.address.googleMapsUrl} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold px-6 py-3 rounded-xl transition-colors text-sm">
+                🗺️ Google Maps pe Dekhein
+              </a>
+            </div>
+          </div>
+          {/* Google Maps embed placeholder */}
+          <div className="bg-gray-200 dark:bg-gray-700 rounded-2xl overflow-hidden h-64 md:h-auto flex items-center justify-center">
+            <div className="text-center text-gray-500 dark:text-gray-400 p-6">
+              <p className="text-4xl mb-3">📍</p>
+              <p className="font-semibold">18/162, H-3, Fatehabad Road</p>
+              <p>Taj Ganj, Agra — 282001</p>
+              <a href={BUSINESS.address.googleMapsUrl} target="_blank" rel="noopener noreferrer"
+                className="inline-block mt-4 text-blue-600 dark:text-blue-400 text-sm font-semibold hover:underline">
+                View on Google Maps →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* CTA */}
+    <section className="py-16 bg-amber-400 text-center px-6">
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Ready to Go Solar?</h2>
+        <p className="text-gray-800 mb-8">Free site visit book karein — Agra + 50km mein.</p>
+        <a href={WHATSAPP_URL('Namaste! Main SolarHub ke baare mein aur jaanna chahta hun. Kripya contact karein.')}
+          target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 px-10 rounded-xl text-lg transition-all hover:scale-105">
+          💬 WhatsApp pe Baat Karein
+        </a>
+      </div>
+    </section>
+  </>
+);
 
 export default About;

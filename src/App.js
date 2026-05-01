@@ -1,147 +1,150 @@
-// src/App.jsx
-import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
+// src/App.js
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { FiSun, FiMenu, FiMoon } from 'react-icons/fi';
+import { FiSun, FiMenu, FiMoon, FiX } from 'react-icons/fi';
+import { Helmet } from 'react-helmet-async';
 import Pricing from './pages/Pricing';
 import Services from './pages/Services';
 import CRM from './pages/CRM';
-import Hero from './components/Hero';
 import Testimonials from './components/Testimonials';
-import LiveChat from './components/LiveChat';
 import GetQuoteButton from './components/GetQuoteButton';
+import WhatsAppButton from './components/WhatsAppButton';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import GetStartedPage from './pages/GetStartedPage';
 import LearnMorePage from './pages/LearnMorePage';
 import SavingsCalculator from './pages/SavingsCalculator';
+import Home from './pages/Home';
+import { BUSINESS } from './content/business';
+import { trackPageView, captureUtm } from './services/leadApi';
+
+// Track page views on route change
+function PageTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    trackPageView(location.pathname);
+    if (window.gtag) window.gtag('config', process.env.REACT_APP_GA_ID, { page_path: location.pathname });
+  }, [location.pathname]);
+  return null;
+}
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [quoteFormOpen, setQuoteFormOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode');
     return saved ? JSON.parse(saved) : false;
   });
 
   useEffect(() => {
-    console.log('App rendering, dark mode:', isDarkMode);
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    // Capture UTM on first visit
+    captureUtm();
+    // GA4 setup
+    if (process.env.REACT_APP_GA_ID && !window.gtag) {
+      const script = document.createElement('script');
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.REACT_APP_GA_ID}`;
+      script.async = true;
+      document.head.appendChild(script);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function() { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', process.env.REACT_APP_GA_ID);
     }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+    if (isDarkMode) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
   }, [isDarkMode]);
+
+  const navLinks = [
+    { to: '/', label: 'Home' },
+    { to: '/about', label: 'About' },
+    { to: '/services', label: 'Services' },
+    { to: '/calculator', label: 'Calculator' },
+    { to: '/contact', label: 'Contact' },
+  ];
 
   return (
     <Router>
-      {/* Header */}
-      <header className="flex justify-between items-center px-6 py-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md sticky top-0 z-50 shadow-md border-b-4 border-yellow-400 dark:border-yellow-600">
-        <Link
-          to="/"
-          className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 transition duration-300"
-          aria-label="Unnati Renewables Home"
-        >
-          ⚡ Unnati Renewables
+      <PageTracker />
+      <Helmet>
+        <title>SolarHub — Solar Installer Agra | UPNEDA Empanelled</title>
+      </Helmet>
+
+      {/* ---- Header ---- */}
+      <header className="flex justify-between items-center px-4 sm:px-6 py-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b-4 border-amber-400">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2" aria-label="SolarHub Home">
+          <span className="text-2xl">☀️</span>
+          <div>
+            <span className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500">
+              SolarHub
+            </span>
+            <p className="text-xs text-gray-500 dark:text-gray-400 leading-none">Save Money Save Future</p>
+          </div>
         </Link>
-        
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors font-medium" aria-label="Home">Home</Link>
-          <Link to="/about" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors font-medium" aria-label="About">About</Link>
-          <Link to="/services" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors font-medium" aria-label="Services">Services</Link>
-          <Link to="/pricing" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors font-medium" aria-label="Pricing">Pricing</Link>
-          <Link to="/calculator" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors font-medium" aria-label="Savings Calculator">Calculator</Link>
-          <Link to="/contact" className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors font-medium" aria-label="Contact">Contact</Link>
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-5" aria-label="Main navigation">
+          {navLinks.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              className="text-gray-700 dark:text-gray-300 hover:text-amber-500 dark:hover:text-amber-400 transition-colors font-medium text-sm"
+            >
+              {label}
+            </Link>
+          ))}
+          <GetQuoteButton variant="default" label="Free Quote" />
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className="text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400"
+            className="text-gray-500 dark:text-gray-400 hover:text-amber-500 dark:hover:text-amber-400 p-1"
             aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            {isDarkMode ? <FiSun size={24} /> : <FiMoon size={24} />}
+            {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
         </nav>
 
-        {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden text-gray-700 dark:text-gray-300"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle mobile menu"
-        >
-          <FiMenu className="w-6 h-6" />
-        </button>
+        {/* Mobile controls */}
+        <div className="md:hidden flex items-center gap-3">
+          <button onClick={() => setIsDarkMode(!isDarkMode)} className="text-gray-500 p-1" aria-label="Toggle dark mode">
+            {isDarkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
+          </button>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="text-gray-700 dark:text-gray-300 p-1"
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-800 shadow-lg py-4 px-6">
-          <Link to="/" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400" aria-label="Home">Home</Link>
-          <Link to="/about" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400" aria-label="About">About</Link>
-          <Link to="/services" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400" aria-label="Services">Services</Link>
-          <Link to="/pricing" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400" aria-label="Pricing">Pricing</Link>
-          <Link to="/calculator" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400" aria-label="Savings Calculator">Calculator</Link>
-          <Link to="/contact" className="block py-2 text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400" aria-label="Contact">Contact</Link>
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className="block py-2 text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400"
-            aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-          </button>
+        <div className="md:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-lg py-4 px-6 z-40 relative">
+          {navLinks.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              className="block py-3 text-gray-700 dark:text-gray-300 hover:text-amber-500 font-medium border-b border-gray-100 dark:border-gray-800"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {label}
+            </Link>
+          ))}
+          <div className="pt-4">
+            <GetQuoteButton variant="default" label="Free Quote Lein" />
+          </div>
         </div>
       )}
 
+      {/* Main */}
       <main>
         <Routes>
-          <Route path="/" element={
-            <>
-              {console.log('Rendering homepage with Testimonials')}
-              <Hero />
-              <div className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
-                <div className="max-w-7xl mx-auto px-6">
-                  <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">Why Choose Unnati Renewables?</h2>
-                  <div className="grid md:grid-cols-3 gap-8">
-                    {[
-                      {
-                        icon: '🌱',
-                        title: 'Sustainable',
-                        description: 'Reduce your carbon footprint with clean, renewable energy.'
-                      },
-                      {
-                        icon: '💰',
-                        title: 'Cost-Effective',
-                        description: 'Significant savings on your electricity bills from day one.'
-                      },
-                      {
-                        icon: '🛡️',
-                        title: 'Reliable',
-                        description: 'High-quality components with industry-leading warranties.'
-                      }
-                    ].map((item, index) => (
-                      <div key={index} className="p-8 bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow text-center">
-                        <div className="text-4xl mb-4">{item.icon}</div>
-                        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{item.title}</h3>
-                        <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="py-16 bg-yellow-50 dark:bg-yellow-900/50 text-center">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">See Your Solar Savings</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-xl mx-auto">
-                  Use our Solar Savings Calculator to estimate how much you can save by switching to solar energy.
-                </p>
-                <Link
-                  to="/calculator"
-                  className="inline-block bg-yellow-500 text-white hover:bg-yellow-600 font-medium py-3 px-6 rounded-lg"
-                  aria-label="Go to Savings Calculator"
-                >
-                  Try the Calculator
-                </Link>
-              </div>
-              <Testimonials />
-            </>
-          } />
+          <Route path="/" element={<Home onOpenQuoteForm={() => document.getElementById('get-quote-btn-default')?.click()} />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/services" element={<Services />} />
           <Route path="/crm" element={<CRM />} />
@@ -153,59 +156,96 @@ function App() {
         </Routes>
       </main>
 
-      <LiveChat />
-      <GetQuoteButton variant="floating" />
+      {/* Sticky WhatsApp */}
+      <WhatsAppButton />
 
-      <footer className="bg-gray-900 text-white py-16 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+      {/* ---- Footer ---- */}
+      <footer className="bg-gray-950 text-white pt-16 pb-8 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+          {/* Brand */}
           <div>
-            <h3 className="text-2xl font-bold text-yellow-400 mb-4">Unnati Renewables</h3>
-            <p className="text-gray-300">Empowering your future with sustainable solar energy solutions.</p>
-          </div>
-          
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Quick Links</h4>
-            <div className="space-y-3">
-              <Link to="/" className="block text-gray-400 hover:text-yellow-400 transition-colors" aria-label="Home">Home</Link>
-              <Link to="/about" className="block text-gray-400 hover:text-yellow-400 transition-colors" aria-label="About">About</Link>
-              <Link to="/services" className="block text-gray-400 hover:text-yellow-400 transition-colors" aria-label="Services">Services</Link>
-              <Link to="/pricing" className="block text-gray-400 hover:text-yellow-400 transition-colors" aria-label="Pricing">Pricing</Link>
-              <Link to="/calculator" className="block text-gray-400 hover:text-yellow-400 transition-colors" aria-label="Savings Calculator">Calculator</Link>
-              <Link to="/contact" className="block text-gray-400 hover:text-yellow-400 transition-colors" aria-label="Contact">Contact</Link>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-3xl">☀️</span>
+              <div>
+                <h3 className="text-xl font-extrabold text-amber-400">SolarHub</h3>
+                <p className="text-xs text-gray-400">Save Money Save Future</p>
+              </div>
+            </div>
+            <p className="text-gray-400 text-sm leading-relaxed mb-4">
+              UPNEDA empanelled solar installer serving Agra and 50km radius.
+              PM Surya Ghar subsidy, DVVNL net metering, EMI — all handled by us.
+            </p>
+            <div className="bg-gray-800 rounded-xl p-3 text-xs text-gray-300">
+              <p className="font-semibold text-amber-400 mb-1">UPNEDA Vendor</p>
+              <p className="font-mono">{BUSINESS.upnedaCode}</p>
             </div>
           </div>
-          
+
+          {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Contact Us</h4>
-            <address className="not-italic text-gray-400 space-y-3">
-              <p>Solar Tower, 5th Floor</p>
-              <p>Bangalore, Karnataka 560001</p>
-              <p>Email: info@unnati-renewables.com</p>
-              <p>Phone: +91 9876543210</p>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Quick Links</h4>
+            <div className="space-y-2">
+              {navLinks.map(({ to, label }) => (
+                <Link key={to} to={to} className="block text-gray-400 hover:text-amber-400 transition-colors text-sm">
+                  {label}
+                </Link>
+              ))}
+              <Link to="/calculator" className="block text-gray-400 hover:text-amber-400 transition-colors text-sm">
+                Solar Calculator
+              </Link>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Contact Us</h4>
+            <address className="not-italic text-sm text-gray-400 space-y-3 leading-relaxed">
+              <p>📍 {BUSINESS.address.line1},<br />{BUSINESS.address.line2}</p>
+              <p>
+                📞 <a href={`tel:${BUSINESS.contacts.primary.phone}`} className="hover:text-amber-400">
+                  {BUSINESS.contacts.primary.phone}
+                </a>
+                <span className="text-gray-600"> ({BUSINESS.contacts.primary.name})</span>
+              </p>
+              <p>
+                📞 <a href={`tel:${BUSINESS.contacts.secondary.phone}`} className="hover:text-amber-400">
+                  {BUSINESS.contacts.secondary.phone}
+                </a>
+                <span className="text-gray-600"> ({BUSINESS.contacts.secondary.name})</span>
+              </p>
+              <p>
+                ✉️ <a href={`mailto:${BUSINESS.contacts.email}`} className="hover:text-amber-400">
+                  {BUSINESS.contacts.email}
+                </a>
+              </p>
             </address>
           </div>
-          
+
+          {/* Service Area + WhatsApp CTA */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Newsletter</h4>
-            <form className="space-y-4">
-              <input 
-                type="email" 
-                placeholder="Your email" 
-                className="w-full px-4 py-2 rounded text-gray-900 dark:text-white dark:bg-gray-700 focus:ring-2 focus:ring-yellow-400 focus:outline-none" 
-                aria-label="Email for newsletter"
-              />
-              <button
-                type="submit"
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 dark:text-white font-medium py-2 px-4 rounded transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Service Area</h4>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {BUSINESS.serviceArea.cities.map((city) => (
+                <span key={city} className="bg-gray-800 text-gray-300 text-xs px-3 py-1 rounded-full">
+                  {city}
+                </span>
+              ))}
+            </div>
+            <a
+              href={`https://wa.me/${BUSINESS.contacts.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-500 text-white font-bold text-sm px-5 py-3 rounded-xl transition-colors"
+            >
+              💬 WhatsApp Us
+            </a>
           </div>
         </div>
-        
-        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-          <p>© {new Date().getFullYear()} Unnati Renewables. All rights reserved.</p>
+
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+          <p>© {new Date().getFullYear()} SolarHub (Seema Electronics). All rights reserved.</p>
+          <p>UPNEDA Vendor: {BUSINESS.upnedaCode} | DISCOM: {BUSINESS.discom}</p>
+          <p>Actual savings depend on site survey, DVVNL tariff slab &amp; DISCOM policy.</p>
         </div>
       </footer>
     </Router>

@@ -24,28 +24,28 @@ const Services = () => {
       description: 'Regular maintenance and cleaning services to keep your system running at peak efficiency.',
       details: 'Our maintenance services include regular inspections, panel cleaning, and system optimization to ensure your solar investment performs at its best. We also offer emergency repair services and performance monitoring.',
       icon: '🔧',
-      bgImage: 'url("https://images.unsplash.com/photo-1581092917737-4a7f9636b9c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80")',
+      bgImage: 'url("https://images.unsplash.com/photo-1624397648248-3a139149023e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80")',
     },
     {
       title: 'Energy Storage',
       description: 'Battery solutions to store excess energy for use during peak hours or outages.',
       details: 'Our energy storage solutions feature state-of-the-art battery systems that store excess solar energy for use when you need it most. We provide scalable options for both residential and commercial applications.',
       icon: '🔋',
-      bgImage: 'url("https://images.unsplash.com/photo-1557200134-90327ee9fafa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80")',
+      bgImage: 'url("https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80")',
     },
     {
       title: 'Consultation',
       description: 'Expert advice to help you choose the right solar solution for your needs.',
       details: 'Our consultation services provide personalized guidance from industry experts. We assess your energy needs, site conditions, and budget to recommend the best solar solution for your home or business.',
       icon: '💡',
-      bgImage: 'url("https://images.unsplash.com/photo-14973662105479-ffa5bc916735?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80")',
+      bgImage: 'url("https://images.unsplash.com/photo-1558449028-b53a39d100fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80")',
     },
     {
       title: 'Government Incentives',
       description: 'We help you navigate and apply for available solar incentives and rebates.',
       details: 'Our team stays up-to-date on federal, state, and local solar incentives to maximize your savings. We handle the paperwork and guide you through the application process to ensure you get all eligible rebates.',
       icon: '📑',
-      bgImage: 'url("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80")',
+      bgImage: 'url("https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80")',
     },
   ];
 

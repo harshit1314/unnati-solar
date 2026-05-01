@@ -1,5 +1,6 @@
 // src/pages/SavingsCalculator.jsx
 import React, { useState, useEffect } from 'react';
+import { BUSINESS, SOLAR_RULES, calcEmi } from '../content/business';
 import { useLocation } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
@@ -17,6 +18,9 @@ const SavingsCalculator = () => {
   const [winterBill, setWinterBill] = useState('');
   const [selectedState, setSelectedState] = useState('uttar-pradesh');
   const [consumerType, setConsumerType] = useState('residential');
+  const [phoneForReport, setPhoneForReport] = useState('');
+  const [showPhoneGate, setShowPhoneGate] = useState(false);
+  const [phoneSubmitted, setPhoneSubmitted] = useState(false);
   const [applyGovernmentScheme, setApplyGovernmentScheme] = useState(true);
   const [subsidyRate, setSubsidyRate] = useState(20);
   const [tariffGrowth, setTariffGrowth] = useState(5);
@@ -104,27 +108,44 @@ const SavingsCalculator = () => {
 
   const calculateSavings = (e) => {
     e.preventDefault();
+    if (window.gtag) window.gtag('event', 'calculator_started', { event_label: consumerType });
 
     const monthlyBill = getEffectiveMonthlyBill();
     if (monthlyBill <= 0) return;
 
-    const monthlySavings = monthlyBill * 0.7;
-    const yearlySavings = monthlySavings * 12;
-    const postSolarBill = monthlyBill - monthlySavings;
+    const isCommercial = consumerType !== 'residential';
+    // Agra: 135 units per kW per month (4.5 kWh/kW/day)
+    const tariff = isCommercial ? SOLAR_RULES.commercialTariffPerUnit : SOLAR_RULES.residentialTariffPerUnit;
+    const costPerKw = isCommercial ? SOLAR_RULES.commercialCostPerKw : SOLAR_RULES.residentialCostPerKw;
 
-    const recommendedSystemKw = Number((monthlyBill / 1200).toFixed(1));
-    const installationCost = Math.round(recommendedSystemKw * 60000);
+    const monthlyUnits = monthlyBill / tariff;
+    const recommendedSystemKw = Math.max(0.5, Math.ceil((monthlyUnits / SOLAR_RULES.avgUnitsPerKwPerMonth) * 10) / 10);
+
+    // Solar covers ~90% of bill in Agra (high irradiance)
+    const monthlySavings = Math.round(monthlyBill * 0.75);
+    const yearlySavings = monthlySavings * 12;
+    const postSolarBill = Math.max(0, Math.round(monthlyBill - monthlySavings));
+
+    const installationCost = Math.round(recommendedSystemKw * costPerKw);
 
     const isUpResidentialScheme = applyGovernmentScheme
       && selectedState === 'uttar-pradesh'
       && consumerType === 'residential';
 
-    const centralSubsidy = isUpResidentialScheme ? getCentralSubsidy(recommendedSystemKw) : 0;
-    const stateSubsidy = isUpResidentialScheme ? getUpStateSubsidy(recommendedSystemKw) : 0;
+    const centralSubsidy = isUpResidentialScheme ? SOLAR_RULES.getSubsidy(recommendedSystemKw) : 0;
+    const stateSubsidy = isUpResidentialScheme ? SOLAR_RULES.getUpStateSubsidy(recommendedSystemKw) : 0;
     const fallbackSubsidy = Math.round(installationCost * (subsidyRate / 100));
     const subsidyAmount = isUpResidentialScheme ? centralSubsidy + stateSubsidy : fallbackSubsidy;
 
     const netInvestment = installationCost - subsidyAmount;
+
+    // EMI calculation (5yr @ 11% p.a.)
+    const emiMonthly = calcEmi(netInvestment, SOLAR_RULES.emiRatePercent, SOLAR_RULES.emiTermMonths);
+    const day1NetProfit = monthlySavings - emiMonthly;
+
+    // Commercial depreciation benefit (40% of system cost, Year 1)
+    const depreciationBenefit = isCommercial ? Math.round(installationCost * SOLAR_RULES.commercialDepreciationRate * 0.30) : 0;
+    // (assuming 30% tax rate on 40% of cost = effective tax saving)
 
     let projectedSavings = 0;
     for (let year = 1; year <= analysisYears; year += 1) {
@@ -132,7 +153,7 @@ const SavingsCalculator = () => {
     }
 
     const paybackYears = yearlySavings > 0 ? Number((netInvestment / yearlySavings).toFixed(1)) : 0;
-    const yearlyGenerationKwh = Math.round(recommendedSystemKw * 1200);
+    const yearlyGenerationKwh = Math.round(recommendedSystemKw * SOLAR_RULES.avgUnitsPerKwPerMonth * 12);
     const co2SavedTons = Number(((yearlyGenerationKwh * 0.82) / 1000).toFixed(1));
     const seasonalBreakdown = billingMode === 'seasonal'
       ? {
@@ -142,6 +163,8 @@ const SavingsCalculator = () => {
           annualAverage: monthlyBill,
         }
       : null;
+
+    if (window.gtag) window.gtag('event', 'calculator_completed', { event_label: consumerType, value: Math.round(netInvestment) });
 
     setSavings({
       billingMode,
@@ -161,6 +184,10 @@ const SavingsCalculator = () => {
       paybackYears,
       yearlyGenerationKwh,
       co2SavedTons,
+      emiMonthly,
+      day1NetProfit,
+      isCommercial,
+      depreciationBenefit,
     });
   };
 
@@ -333,8 +360,8 @@ const SavingsCalculator = () => {
     doc.setFillColor(253, 224, 71);
     doc.rect(0, 0, 210, 26, 'F');
     doc.setTextColor(28, 25, 23);
-    addLine('Unnati Renewables - Solar Proposal', 16, 8);
-    addLine(`Generated on: ${new Date().toLocaleDateString('en-IN')}`, 10, 8);
+    addLine('SolarHub — Solar Proposal (UPNEDA: AGC2512234235)', 14, 8);
+    addLine(`Generated on: ${new Date().toLocaleDateString('en-IN')} | solarhub050815@gmail.com | +91 93599 12888`, 9, 8);
 
     doc.setTextColor(17, 24, 39);
     addLine('Profile', 13, 7);
@@ -387,24 +414,25 @@ const SavingsCalculator = () => {
     doc.save(fileName);
   };
 
-  const shareOnWhatsApp = () => {
+  const shareOnWhatsApp = (phone) => {
     if (!savings) return;
+    if (window.gtag) window.gtag('event', 'whatsapp_clicked', { event_label: 'calculator' });
 
-    const stateLabel = selectedState === 'uttar-pradesh' ? 'Uttar Pradesh' : 'Other State';
     const message = [
-      'Unnati Renewables - Solar Estimate',
-      `Monthly Bill Used: ${formatInr(savings.inputMonthlyBill)}`,
-      `State: ${stateLabel}`,
+      `Namaste SolarHub! Maine calculator use kiya hai.`,
+      `Monthly Bill: ${formatInr(savings.inputMonthlyBill)}`,
       `Recommended System: ${savings.recommendedSystemKw} kW`,
-      `Net Investment: ${formatInr(savings.netInvestment)}`,
+      `Net Investment (after subsidy): ${formatInr(savings.netInvestment)}`,
       `Monthly Savings: ${formatInr(savings.monthly)}`,
-      `Projected Savings (${analysisYears} years): ${formatInr(savings.projectedSavings)}`,
+      `EMI: ${formatInr(savings.emiMonthly)}/month`,
+      `Day-1 Net Profit: ${formatInr(savings.day1NetProfit)}`,
       `Payback: ${savings.paybackYears} years`,
+      phone ? `Phone: ${phone}` : '',
       '',
-      'Get your personalized solar quote from Unnati Renewables.',
-    ].join('\n');
+      'Please share a detailed quote. Shukriya!',
+    ].filter(Boolean).join('\n');
 
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${BUSINESS.contacts.whatsapp}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
@@ -412,11 +440,14 @@ const SavingsCalculator = () => {
     <div className="py-16 bg-gray-50 dark:bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
+          <div className="inline-block bg-amber-100 dark:bg-amber-900/20 text-amber-800 dark:text-amber-300 text-sm font-semibold px-4 py-2 rounded-full mb-4">
+            ☀️ SolarHub — Agra Solar Calculator
+          </div>
+          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
             Solar Savings Calculator
-          </h2>
+          </h1>
           <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Estimate your potential savings by switching to solar energy with Unnati Renewables.
+            Apna bijli ka bill daalo — system size, PM Surya Ghar subsidy, EMI, aur Day-1 profit instantly calculate hoga.
           </p>
         </div>
         <form onSubmit={calculateSavings} className="max-w-md mx-auto space-y-6">
@@ -468,8 +499,11 @@ const SavingsCalculator = () => {
                 onChange={(e) => setConsumerType(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 dark:bg-gray-700 dark:text-white"
               >
-                <option value="residential">Residential</option>
-                <option value="commercial">Commercial</option>
+                <option value="residential">🏠 Ghar / Flat</option>
+                <option value="shop">🏪 Dukan / Office</option>
+                <option value="factory">🏭 Factory / Industrial</option>
+                <option value="school">🏫 School / Institution</option>
+                <option value="society">🏢 Society / Apartment</option>
               </select>
             </div>
           </div>
@@ -618,7 +652,37 @@ const SavingsCalculator = () => {
         </form>
         {savings && (
           <div className="mt-8 bg-white dark:bg-gray-700 p-4 sm:p-6 rounded-xl shadow-md max-w-4xl mx-auto">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 text-center">Your Estimated Solar Outcomes</h3>
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 text-center">Aapka Solar Estimate — SolarHub Agra</h3>
+
+            {/* Day-1 Net Profit highlight */}
+            {savings.day1NetProfit !== undefined && (
+              <div className={`mb-6 rounded-2xl p-5 text-center border-2 ${savings.day1NetProfit >= 0 ? 'border-green-400 bg-green-50 dark:bg-green-900/20' : 'border-orange-400 bg-orange-50 dark:bg-orange-900/20'}`}>
+                <p className="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1">🔥 Day-1 Net Position (Savings − EMI)</p>
+                <p className={`text-4xl font-extrabold ${savings.day1NetProfit >= 0 ? 'text-green-600' : 'text-orange-600'}`}>
+                  {savings.day1NetProfit >= 0 ? '+' : ''}{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(savings.day1NetProfit)}/month
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                  EMI: {formatInr(savings.emiMonthly)}/mo (5yr @{SOLAR_RULES.emiRatePercent}%) &nbsp;|&nbsp; Monthly Savings: {formatInr(savings.monthly)}/mo
+                </p>
+                {savings.day1NetProfit >= 0 && (
+                  <p className="text-xs text-green-600 dark:text-green-400 mt-2 font-semibold">
+                    ✅ Solar se EMI bhar ke bhi {formatInr(savings.day1NetProfit)}/month bachate ho — Day 1 se!
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Commercial depreciation benefit */}
+            {savings.isCommercial && savings.depreciationBenefit > 0 && (
+              <div className="mb-6 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-xl p-4">
+                <h4 className="font-semibold text-purple-800 dark:text-purple-300 mb-1">🏦 Commercial Tax Benefit</h4>
+                <p className="text-sm text-purple-700 dark:text-purple-400">
+                  40% Accelerated Depreciation se Year 1 mein estimated tax saving: <strong>{formatInr(savings.depreciationBenefit)}</strong>
+                  <span className="text-xs ml-2">(30% tax slab assume karke)</span>
+                </p>
+              </div>
+            )}
+
             <div className="mb-4">
               {chartData && (
                 <div className="h-56 sm:h-64 md:h-72">
@@ -765,33 +829,58 @@ const SavingsCalculator = () => {
               </div>
             )}
 
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* WhatsApp Report CTA — phone gate */}
+            <div className="mt-6 bg-green-50 dark:bg-green-900/20 border border-green-300 dark:border-green-700 rounded-2xl p-5 mb-4">
+              <h4 className="font-bold text-green-800 dark:text-green-300 mb-2">📱 WhatsApp pe Full Report Lein</h4>
+              {!phoneSubmitted ? (
+                <div className="flex gap-2">
+                  <input
+                    type="tel"
+                    maxLength={10}
+                    value={phoneForReport}
+                    onChange={(e) => setPhoneForReport(e.target.value)}
+                    placeholder="10-digit mobile"
+                    className="flex-1 px-4 py-3 rounded-xl border-2 border-green-300 focus:border-green-500 focus:outline-none dark:bg-gray-800 dark:text-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (/^\d{10}$/.test(phoneForReport)) {
+                        setPhoneSubmitted(true);
+                        shareOnWhatsApp(phoneForReport);
+                      } else {
+                        alert('Please enter a valid 10-digit number');
+                      }
+                    }}
+                    className="bg-green-600 hover:bg-green-700 text-white font-bold px-5 py-3 rounded-xl transition-colors"
+                  >
+                    💬 Send
+                  </button>
+                </div>
+              ) : (
+                <p className="text-green-700 dark:text-green-300 font-semibold">✅ WhatsApp pe message open ho raha hai SolarHub ke saath!</p>
+              )}
+              <p className="text-xs text-green-600 dark:text-green-400 mt-2">Number share karein — SolarHub team 2 hrs mein detailed quote bhejega.</p>
+            </div>
+
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Button
                 type="button"
-                className="w-full bg-white border border-yellow-500 text-yellow-700 hover:bg-yellow-50 font-medium py-3 px-4 rounded-lg"
+                className="w-full bg-white border-2 border-amber-400 text-amber-700 hover:bg-amber-50 font-bold py-3 px-4 rounded-xl"
                 onClick={downloadProposalPdf}
               >
-                Download Proposal PDF
+                📄 Download PDF Proposal
               </Button>
 
               <Button
                 type="button"
-                className="w-full bg-green-600 text-white hover:bg-green-700 font-medium py-3 px-4 rounded-lg"
-                onClick={shareOnWhatsApp}
-              >
-                Share on WhatsApp
-              </Button>
-
-              <Button
-                type="button"
-                className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 font-medium py-3 px-4 rounded-lg"
+                className="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold py-3 px-4 rounded-xl"
                 onClick={() => {
-                  const quoteButton = document.querySelector('.get-quote-button');
-                  if (quoteButton) quoteButton.click();
-                  else console.error('Get Quote button not found');
+                  const btn = document.getElementById('get-quote-btn-default');
+                  if (btn) btn.click();
                 }}
               >
-                Get a Free Quote
+                📋 Free Site Visit Book Karein
               </Button>
             </div>
           </div>
