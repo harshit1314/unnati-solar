@@ -23,8 +23,8 @@ export const BUSINESS = {
   },
 
   contacts: {
-    primary: { name: 'Divyansh Garg', phone: '+91 80777 80429', role: 'Director', experience: '30+ Years' },
-    secondary: { name: 'Harshit Agarwal', phone: '+91 83848 35981', role: 'Technical Head', experience: '30+ Years' },
+    primary: { name: 'Divyansh Garg', phone: '+91 80777 80429', role: 'Director' },
+    secondary: { name: 'Harshit Agarwal', phone: '+91 83848 35981', role: 'Technical Head' },
     email: 'solarhub050815@gmail.com',
     whatsapp: '918384835981', // without + for wa.me URL
     teamSize: '20+',

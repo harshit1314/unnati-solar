@@ -11,9 +11,6 @@ const TeamCard = ({ name, role, phone, description }) => (
     </div>
     <h3 className="font-extrabold text-gray-900 dark:text-white text-lg">{name}</h3>
     <p className="text-amber-600 dark:text-amber-400 text-sm font-semibold mb-1">{role}</p>
-    <div className="inline-block bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full mb-2">
-      30+ Years Experience
-    </div>
     <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{description}</p>
     <a href={`tel:${phone}`} className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 dark:text-blue-400 hover:underline">
       📞 {phone}
@@ -130,7 +127,7 @@ const About = () => (
             name={BUSINESS.contacts.secondary.name}
             role={BUSINESS.contacts.secondary.role}
             phone={BUSINESS.contacts.secondary.phone}
-            description="30+ saal ka electrical aur solar industry experience. PM Surya Ghar subsidy applications mein specialist. Directly handle karte hain sabhi site surveys."
+            description="PM Surya Ghar subsidy applications mein specialist. Directly handle karte hain sabhi site surveys."
           />
           <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 shadow-xl border border-blue-500/20 flex flex-col items-center justify-center text-center text-white">
             <div className="text-4xl mb-3">👷‍♂️</div>

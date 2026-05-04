@@ -272,7 +272,7 @@ const FinalCTA = ({ onOpenQuoteForm }) => (
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-400 text-white font-bold py-4 px-10 rounded-xl text-lg transition-all hover:scale-105"
         >
-          💬 WhatsApp on {BUSINESS.contacts.primary.phone}
+          💬 WhatsApp on {BUSINESS.contacts.secondary.phone}
         </a>
       </div>
       <p className="text-blue-300 text-sm mt-6">
