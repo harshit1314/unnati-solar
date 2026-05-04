@@ -7,7 +7,7 @@ import { submitLead } from '../services/leadApi';
 import { isPincodeServed, BUSINESS } from '../content/business';
 
 const PROPERTY_TYPES = [
-  { value: 'residential', label: 'Ghar / Flat', icon: '🏠', hint: 'PM Surya Ghar subsidy eligible' },
+  { value: 'residential', label: 'Apna Ghar', icon: '🏠', hint: 'PM Surya Ghar subsidy eligible' },
   { value: 'shop', label: 'Dukan / Office', icon: '🏪', hint: '40% depreciation benefit' },
   { value: 'factory', label: 'Factory / Industrial', icon: '🏭', hint: 'Best commercial ROI' },
   { value: 'school', label: 'School / Institution', icon: '🏫', hint: 'CSR & green credentials' },

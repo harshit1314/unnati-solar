@@ -60,7 +60,7 @@ const PincodeChecker = () => {
           <div className="mt-6 p-5 bg-green-50 dark:bg-green-900/20 border-2 border-green-400 rounded-2xl animate-fade-in">
             <p className="text-2xl mb-2">✅</p>
             <p className="font-bold text-green-700 dark:text-green-400 text-xl">
-              Haan! Aapke area mein service available hai.
+              Haan! Aapke area mein ₹1,08,000 tak subsidy available hai.
             </p>
             <p className="text-green-600 dark:text-green-300 text-sm mt-1">
               Pincode {pincode} — Agra + 50km service area covered
@@ -237,7 +237,7 @@ const CalculatorBand = () => (
         Apna Solar Savings Estimate Karein
       </h2>
       <p className="text-gray-800 mb-8 max-w-xl mx-auto">
-        Monthly bill daalo — system size, subsidy, EMI, aur Day-1 profit sab instantly calculate ho jaayega.
+        Monthly bill daalo — system size, subsidy, EMI starts from ₹1,499, aur Day-1 profit sab instantly calculate ho jaayega.
       </p>
       <Link
         to="/calculator"
@@ -254,7 +254,7 @@ const FinalCTA = ({ onOpenQuoteForm }) => (
   <section className="py-20 bg-gradient-to-r from-blue-900 to-blue-950 text-center px-6">
     <div className="max-w-3xl mx-auto">
       <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-        Ek Kadam Aur — Free Quote Lein
+        Ek Kadam Solar Ki Taraf — Free Quote Lein
       </h2>
       <p className="text-blue-200 text-lg mb-8">
         Apna bijli bill WhatsApp karo ya form bharo — 2 ghante mein callback guaranteed.
@@ -288,7 +288,7 @@ const Home = ({ onOpenQuoteForm }) => {
     <>
       <Helmet>
         <title>SolarHub — Solar Installer Agra | PM Surya Ghar | UPNEDA {BUSINESS.upnedaCode}</title>
-        <meta name="description" content="Agra ka #1 UPNEDA empanelled solar installer. PM Surya Ghar subsidy ₹78,000, EMI, DVVNL net metering — sab kuch hum handle karte hain. Free site visit Agra + 50km." />
+        <meta name="description" content="Agra ka #1 UPNEDA empanelled solar installer. PM Surya Ghar Subsidy ₹1,08,000, EMI, DVVNL net metering — sab kuch hum handle karte hain. Free site visit Agra + 50km." />
       </Helmet>
       <Hero onOpenQuoteForm={onOpenQuoteForm} />
       <PincodeChecker />

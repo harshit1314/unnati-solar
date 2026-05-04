@@ -166,7 +166,7 @@ const Contact = () => {
                     <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Property Type</label>
                     <select value={form.property_type} onChange={(e) => set('property_type', e.target.value)}
                       className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 focus:border-amber-400 focus:outline-none dark:bg-gray-900 dark:text-white">
-                      <option value="residential">Ghar / Flat</option>
+                      <option value="residential">Apna Ghar</option>
                       <option value="shop">Dukan / Office</option>
                       <option value="factory">Factory / Industrial</option>
                       <option value="school">School / Institution</option>

@@ -11,7 +11,7 @@ export const BUSINESS = {
   heroSubtitle: 'You just send your electricity bill — we handle the survey, PM Surya Ghar subsidy, DVVNL net metering, and installation.',
   parentEntity: 'Seema Electronics',
   upnedaCode: 'AGC2512234235',
-  discom: 'DVVNL (Dakshinanchal Vidyut Vitran Nigam Limited)',
+  discom: 'All India DISCOMs Supported (DVVNL, PVVNL, PUVVNL, MVVNL, etc.)',
 
   address: {
     line1: '18/162, H-3, Fatehabad Road',
@@ -23,16 +23,20 @@ export const BUSINESS = {
   },
 
   contacts: {
-    primary: { name: 'Divyansh Garg', phone: '+91 80777 80429', role: 'Director' },
-    secondary: { name: 'Harshit Agarwal', phone: '+91 83848 35981', role: 'Technical Head' },
+    primary: { name: 'Divyansh Garg', phone: '+91 80777 80429', role: 'Director', experience: '30+ Years' },
+    secondary: { name: 'Harshit Agarwal', phone: '+91 83848 35981', role: 'Technical Head', experience: '30+ Years' },
     email: 'solarhub050815@gmail.com',
     whatsapp: '918384835981', // without + for wa.me URL
+    teamSize: '20+',
   },
 
   serviceArea: {
     description: 'Agra + 50 km radius',
     cities: ['Agra', 'Mathura', 'Vrindavan', 'Firozabad', 'Fatehpur Sikri', 'Tundla', 'Achhnera', 'Bah', 'Kheragarh', 'Kiraoli'],
   },
+  brands: ['Adani Solar', 'Waaree Solar', 'Tata Solar', 'Havells', 'Luminous'],
+  categories: ['On-grid Solar', 'Off-grid Solar', 'Hybrid Solar'],
+  emiStartsFrom: 1499,
 };
 
 // ---- Business Rules ----
@@ -50,7 +54,7 @@ export const SOLAR_RULES = {
   commercialCostPerKw: 52500,    // ₹50k–₹55k range
 
   // EMI assumptions
-  emiRatePercent: 11,   // % per annum
+  emiRatePercent: 6,   // % per annum (Max 6% as requested)
   emiTermMonths: 60,    // 5 years
 
   // Commercial accelerated depreciation
@@ -116,8 +120,8 @@ export const TRUST_PILLARS = [
   {
     icon: '☀️',
     title: 'PM Surya Ghar Subsidy',
-    subtitle: 'Up to ₹78,000 Central + UP top-up',
-    description: 'We handle the entire application process on the national portal — you don\'t fill a single form.',
+    subtitle: 'Up to ₹1,08,000 (Central + State)',
+    description: 'We handle the entire application process for both Central (₹78k) and UP State (₹30k) subsidies — you don\'t fill a single form.',
   },
   {
     icon: '💳',
@@ -127,9 +131,9 @@ export const TRUST_PILLARS = [
   },
   {
     icon: '⚡',
-    title: 'DVVNL Net Metering',
-    subtitle: 'Surplus units credited to your account',
-    description: 'We handle all DVVNL paperwork for net metering — your meter runs backward on sunny days.',
+    title: 'All-India DISCOM Support',
+    subtitle: 'Net Metering for DVVNL, PVVNL, PUVVNL & more',
+    description: 'We handle all paperwork for net metering with your local electricity provider — your meter runs backward on sunny days.',
   },
   {
     icon: '🛡️',
@@ -239,11 +243,11 @@ export const TESTIMONIALS = [
 export const FAQ = [
   {
     q: 'PM Surya Ghar subsidy ke liye kaun eligible hai?',
-    a: 'Koi bhi residential bijli connection wala citizen eligible hai. Agra mein DVVNL connection hona chahiye. SolarHub free mein eligibility check karta hai aur poora application process handle karta hai.',
+    a: 'Koi bhi residential bijli connection wala citizen eligible hai. Agra, Mathura aur poore UP mein kisi bhi DISCOM (DVVNL, PVVNL, etc.) ka connection hona chahiye. SolarHub poora process handle karta hai.',
   },
   {
     q: 'Subsidy kitni milti hai?',
-    a: 'Central subsidy: 1kW ke liye ₹30,000, 2kW ke liye ₹60,000, aur 3kW ya usse bade system ke liye maximum ₹78,000. Upar se UP state top-up bhi milta hai. Commercial systems ke liye 40% accelerated depreciation available hai.',
+    a: 'Total ₹1,08,000 tak ki subsidy milti hai. Central subsidy: up to ₹78,000 (3kW+ system). UP State subsidy: up to ₹30,000. Commercial systems ke liye 40% accelerated depreciation available hai.',
   },
   {
     q: 'Kitne time mein installation hoti hai?',
@@ -254,8 +258,8 @@ export const FAQ = [
     a: 'Haan. Hum partner banks ke through EMI arrange karte hain. 5kW residential system ke liye approx ₹2,200/month se start hota hai. Aur agar solar ki savings zyada hain toh Day-1 se net profit hota hai.',
   },
   {
-    q: 'DVVNL net metering kya hota hai?',
-    a: 'Net metering mein aapka meter bidirectional ho jata hai. Jab solar zyada bijli banata hai, wo grid mein jaata hai aur credit milta hai. Mahine ke end mein sirf net consumption ka bill aata hai.',
+    q: 'Net metering kya hota hai?',
+    a: 'Net metering mein aapka meter bidirectional ho jata hai. Jab solar zyada bijli banata hai, wo grid mein jaata hai aur credit milta hai. Mahine ke end mein sirf net consumption ka bill aata hai. Hum DVVNL, PVVNL aur sabhi DISCOMs ke liye ye handle karte hain.',
   },
   {
     q: 'Kya rental property mein solar lag sakta hai?',

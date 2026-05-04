@@ -18,7 +18,7 @@ const PMSuryaGharSection = ({ onOpenQuoteForm }) => {
             </div>
             
             <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight mb-6">
-              Get Up To <span className="text-blue-600 dark:text-blue-400">₹78,000</span> Government Subsidy
+              Get Up To <span className="text-blue-600 dark:text-blue-400">₹1,08,000</span> Total Subsidy
             </h2>
             
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
@@ -27,7 +27,7 @@ const PMSuryaGharSection = ({ onOpenQuoteForm }) => {
 
             <div className="space-y-4 mb-10">
               {[
-                { title: '₹78,000 Central Subsidy', desc: 'Direct bank account mein transfer (National Portal ke through).' },
+                { title: '₹1,08,000 Total Subsidy', desc: '₹78,000 Central (PM Surya Ghar) + ₹30,000 State (UPNEDA).' },
                 { title: '300 Units Free Electricity', desc: 'System lagne ke baad har mahine ki bijli bilkul muft.' },
                 { title: 'Zero Paperwork Stress', desc: 'Application se subsidy approval tak — hum sab handle karte hain.' },
                 { title: 'Low-Interest EMI', desc: 'Partner banks se quick solar loan arrangement.' },
@@ -114,8 +114,8 @@ const PMSuryaGharSection = ({ onOpenQuoteForm }) => {
                   UP
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-amber-300">UP State Top-up!</p>
-                  <p className="text-xs text-blue-100">Additional ₹15,000 - ₹30,000 by UPNEDA.</p>
+                  <p className="text-sm font-bold text-amber-300">UP State Subsidy Included!</p>
+                  <p className="text-xs text-blue-100">Get additional <span className="text-white font-bold underline">₹30,000</span> from UP Government.</p>
                 </div>
               </div>
             </div>

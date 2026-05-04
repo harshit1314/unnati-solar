@@ -20,11 +20,19 @@ import { trackPageView, captureUtm } from './services/leadApi';
 
 // Track page views on route change
 function PageTracker() {
-  const location = useLocation();
+  const { pathname } = useLocation();
+  
   useEffect(() => {
-    trackPageView(location.pathname);
-    if (window.gtag) window.gtag('config', process.env.REACT_APP_GA_ID, { page_path: location.pathname });
-  }, [location.pathname]);
+    // Scroll to top on every route change
+    window.scrollTo(0, 0);
+    
+    // Track analytics
+    trackPageView(pathname);
+    if (window.gtag) {
+      window.gtag('config', process.env.REACT_APP_GA_ID, { page_path: pathname });
+    }
+  }, [pathname]);
+
   return null;
 }
 
@@ -124,20 +132,23 @@ function App() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-lg py-4 px-6 z-40 relative">
-          {navLinks.map(({ to, label }) => (
-            <Link
-              key={to}
-              to={to}
-              className="block py-3 text-gray-700 dark:text-gray-300 hover:text-amber-500 font-medium border-b border-gray-100 dark:border-gray-800"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
-          <div className="pt-4">
-            <GetQuoteButton variant="default" label="Free Quote Lein" />
-          </div>
+        <div className="md:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-2xl py-6 px-6 z-40 fixed top-[60px] left-0 right-0 h-[calc(100vh-60px)] overflow-y-auto">
+          <nav className="flex flex-col gap-2">
+            {navLinks.map(({ to, label }) => (
+              <Link
+                key={to}
+                to={to}
+                className="block py-4 px-4 text-lg font-bold text-gray-800 dark:text-gray-200 hover:bg-amber-50 dark:hover:bg-gray-800 rounded-xl transition-all border-b border-gray-50 dark:border-gray-800"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {label}
+              </Link>
+            ))}
+            <div className="pt-8 px-2">
+              <GetQuoteButton variant="default" label="Free Solar Quote Lein" />
+              <p className="text-center text-xs text-gray-400 mt-6">Agra's Trusted Solar Partner</p>
+            </div>
+          </nav>
         </div>
       )}
 

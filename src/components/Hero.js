@@ -35,7 +35,7 @@ const Hero = ({ onOpenQuoteForm }) => {
       {/* Trust badge strip */}
       <div className="relative z-10 bg-amber-400 text-gray-900 text-xs sm:text-sm font-semibold py-2 px-4 text-center flex flex-wrap justify-center gap-x-6 gap-y-1">
         <span>✅ UPNEDA Empanelled — {BUSINESS.upnedaCode}</span>
-        <span>✅ PM Surya Ghar Subsidy — ₹78,000 tak</span>
+        <span>✅ PM Surya Ghar Subsidy — ₹1,08,000 tak</span>
         <span>✅ Free Site Visit — Agra + 50km</span>
       </div>
 
@@ -55,6 +55,9 @@ const Hero = ({ onOpenQuoteForm }) => {
             <span className="text-amber-400">Aap bas bill bhejo,</span>
             <br />
             <span>baaki sab humara kaam.</span>
+            <div className="mt-4 text-sm sm:text-base font-bold bg-white/10 inline-block px-4 py-1 rounded-full text-blue-200 border border-white/10 backdrop-blur-sm">
+              🇮🇳 Ek Kadam Solar Ki Taraf
+            </div>
           </h1>
 
           {/* English subheading */}
@@ -105,7 +108,7 @@ const Hero = ({ onOpenQuoteForm }) => {
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-6">
           {[
             { value: '200+', label: 'Installations in Agra' },
-            { value: '₹78K', label: 'Max Subsidy Available' },
+            { value: '₹1.08L', label: 'Max Subsidy Available' },
             { value: '25 yr', label: 'Panel Warranty' },
             { value: 'UPNEDA', label: `Vendor: ${BUSINESS.upnedaCode}` },
           ].map((stat, i) => (

@@ -25,6 +25,9 @@ const SavingsCalculator = () => {
   const [subsidyRate, setSubsidyRate] = useState(20);
   const [tariffGrowth, setTariffGrowth] = useState(5);
   const [analysisYears, setAnalysisYears] = useState(10);
+  const [selectedDiscom, setSelectedDiscom] = useState('DVVNL');
+  const [interestFreeEmi, setInterestFreeEmi] = useState(false);
+  const [customInterestRate, setCustomInterestRate] = useState(6);
   const [savings, setSavings] = useState(null);
   const location = useLocation();
 
@@ -139,8 +142,9 @@ const SavingsCalculator = () => {
 
     const netInvestment = installationCost - subsidyAmount;
 
-    // EMI calculation (5yr @ 11% p.a.)
-    const emiMonthly = calcEmi(netInvestment, SOLAR_RULES.emiRatePercent, SOLAR_RULES.emiTermMonths);
+    // EMI calculation (Max 6% or Interest-Free)
+    const effectiveRate = interestFreeEmi ? 0 : customInterestRate;
+    const emiMonthly = calcEmi(netInvestment, effectiveRate, SOLAR_RULES.emiTermMonths);
     const day1NetProfit = monthlySavings - emiMonthly;
 
     // Commercial depreciation benefit (40% of system cost, Year 1)
@@ -377,7 +381,9 @@ const SavingsCalculator = () => {
     addLine('Recommended System Summary', 13, 7);
     addLine(`System Size: ${savings.recommendedSystemKw} kW`);
     addLine(`Installation Cost: ${formatInr(savings.installationCost)}`);
-    addLine(`Total Subsidy: ${formatInr(savings.subsidyAmount)}`);
+    addLine(`Central Subsidy (PM Surya Ghar): ₹78,000`);
+    addLine(`UP State Subsidy: ₹30,000`);
+    addLine(`Total Eligible Subsidy: ${formatInr(savings.subsidyAmount)}`);
     addLine(`Net Investment: ${formatInr(savings.netInvestment)}`);
     addLine(`Post-Solar Monthly Bill: ${formatInr(savings.postSolarBill)}`);
     addLine(`Monthly Savings: ${formatInr(savings.monthly)}`);
@@ -427,6 +433,7 @@ const SavingsCalculator = () => {
       `EMI: ${formatInr(savings.emiMonthly)}/month`,
       `Day-1 Net Profit: ${formatInr(savings.day1NetProfit)}`,
       `Payback: ${savings.paybackYears} years`,
+      `DISCOM: ${selectedDiscom}`,
       phone ? `Phone: ${phone}` : '',
       '',
       'Please share a detailed quote. Shukriya!',
@@ -499,13 +506,34 @@ const SavingsCalculator = () => {
                 onChange={(e) => setConsumerType(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 dark:bg-gray-700 dark:text-white"
               >
-                <option value="residential">🏠 Ghar / Flat</option>
+                <option value="residential">🏠 Apna Ghar</option>
                 <option value="shop">🏪 Dukan / Office</option>
                 <option value="factory">🏭 Factory / Industrial</option>
                 <option value="school">🏫 School / Institution</option>
                 <option value="society">🏢 Society / Apartment</option>
               </select>
             </div>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 dark:text-gray-300 mb-2 text-sm font-medium" htmlFor="selectedDiscom">
+              Electricity Provider (DISCOM)
+            </label>
+            <select
+              id="selectedDiscom"
+              value={selectedDiscom}
+              onChange={(e) => setSelectedDiscom(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 dark:bg-gray-700 dark:text-white"
+            >
+              <option value="DVVNL">DVVNL (Dakshinanchal)</option>
+              <option value="PVVNL">PVVNL (Paschimanchal)</option>
+              <option value="PUVVNL">PUVVNL (Purvanchal)</option>
+              <option value="MVVNL">MVVNL (Madhyanchal)</option>
+              <option value="KESCO">KESCO (Kanpur)</option>
+              <option value="NPCL">NPCL (Noida)</option>
+              <option value="OTHER">Other National DISCOM</option>
+            </select>
+            <p className="text-[10px] text-gray-500 mt-1 italic">Net metering support available for all national DISCOMs.</p>
           </div>
 
           {billingMode === 'single' ? (
@@ -606,10 +634,34 @@ const SavingsCalculator = () => {
               </span>
             </label>
             {applyGovernmentScheme && selectedState === 'uttar-pradesh' && consumerType === 'residential' && (
-              <p className="text-xs text-gray-600 dark:text-gray-300 mt-2">
-                Rule used: Central subsidy capped at ₹78,000 plus UP subsidy capped at ₹30,000.
+              <p className="text-xs text-gray-600 dark:text-gray-300 mt-2 font-semibold text-blue-600">
+                ✅ Total Subsidy Eligible: ₹1,08,000 (Central ₹78k + State ₹30k)
               </p>
             )}
+          </div>
+
+          <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 dark:bg-indigo-900/10 p-3">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Standard EMI Plan (6% Interest)</label>
+              <input
+                type="radio"
+                name="emiPlan"
+                checked={!interestFreeEmi}
+                onChange={() => setInterestFreeEmi(false)}
+                className="w-4 h-4 text-yellow-500 border-gray-300 focus:ring-yellow-500"
+              />
+            </div>
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-indigo-100/50">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-200">Interest-Free Plan (0% Interest)</label>
+              <input
+                type="radio"
+                name="emiPlan"
+                checked={interestFreeEmi}
+                onChange={() => setInterestFreeEmi(true)}
+                className="w-4 h-4 text-yellow-500 border-gray-300 focus:ring-yellow-500"
+              />
+            </div>
+            <p className="text-[10px] text-gray-500 mt-2 italic">*All government banks support standard 6% ROI plans.</p>
           </div>
 
           <div>
@@ -624,8 +676,10 @@ const SavingsCalculator = () => {
             >
               <option value={3}>3% yearly</option>
               <option value={5}>5% yearly</option>
-              <option value={7}>7% yearly</option>
             </select>
+            <p className="text-[10px] text-gray-500 mt-1 italic">
+              Expected annual increase in electricity rates (Avg 5% in UP).
+            </p>
           </div>
 
           <div>
@@ -642,6 +696,9 @@ const SavingsCalculator = () => {
               <option value={10}>10 years</option>
               <option value={15}>15 years</option>
             </select>
+            <p className="text-[10px] text-gray-500 mt-1 italic">
+              Projected period to see total savings (Panels last 25+ years).
+            </p>
           </div>
 
           <Button
@@ -662,7 +719,7 @@ const SavingsCalculator = () => {
                   {savings.day1NetProfit >= 0 ? '+' : ''}{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(savings.day1NetProfit)}/month
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                  EMI: {formatInr(savings.emiMonthly)}/mo (5yr @{SOLAR_RULES.emiRatePercent}%) &nbsp;|&nbsp; Monthly Savings: {formatInr(savings.monthly)}/mo
+                  EMI: {formatInr(savings.emiMonthly)}/mo ({SOLAR_RULES.emiTermMonths / 12}yr @{interestFreeEmi ? '0' : customInterestRate}%) &nbsp;|&nbsp; Monthly Savings: {formatInr(savings.monthly)}/mo
                 </p>
                 {savings.day1NetProfit >= 0 && (
                   <p className="text-xs text-green-600 dark:text-green-400 mt-2 font-semibold">
@@ -772,9 +829,26 @@ const SavingsCalculator = () => {
                 <span className="font-semibold">{formatInr(savings.subsidyAmount)}</span>
               </p>
               <p>Net Investment: <span className="font-semibold">{formatInr(savings.netInvestment)}</span></p>
+              <p>Electricity Provider: <span className="font-semibold text-blue-600">{selectedDiscom}</span></p>
               <p>Post-Solar Monthly Bill: <span className="font-semibold">{formatInr(savings.postSolarBill)}</span></p>
               <p>Estimated Yearly Generation: <span className="font-semibold">{savings.yearlyGenerationKwh.toLocaleString('en-IN')} kWh</span></p>
               <p>Estimated CO2 Offset: <span className="font-semibold">{savings.co2SavedTons} tons/year</span></p>
+            </div>
+
+            <div className="mt-8 p-4 bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-700/50 rounded-xl">
+              <h4 className="text-sm font-bold text-amber-800 dark:text-amber-400 mb-3 flex items-center gap-2">
+                🏦 Supported National & Government Banks for EMI
+              </h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {['State Bank of India', 'Punjab National Bank', 'Bank of Baroda', 'Union Bank', 'Canara Bank', 'Indian Bank', 'Central Bank', 'Bank of Maharashtra'].map(bank => (
+                  <div key={bank} className="flex items-center gap-2 text-[10px] font-medium text-amber-900 dark:text-amber-300">
+                    <span className="text-green-500">✔</span> {bank}
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-[10px] text-amber-700 dark:text-amber-500 italic">
+                *Interest rates capped at 6% or 0% interest-free options available through partner banks.
+              </p>
             </div>
 
             <div className="rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 p-4 mb-6">
